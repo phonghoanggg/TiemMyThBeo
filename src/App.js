@@ -3,6 +3,7 @@ import './App.css';
 import Header from './component/Header/Header';
 import Content from './component/Content/Content';
 import Footer from './component/Footer/Footer';
+import 'tailwindcss/tailwind.css';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
