@@ -361,7 +361,7 @@ header.sticky{
 		max-width: 500px;
 	}
 	.home-text{
-		padding-top: 50px;
+		padding-top: 20px;
 	}
 	.about{
 		grid-template-columns: 1fr;
