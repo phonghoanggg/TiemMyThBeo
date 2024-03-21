@@ -1,49 +1,31 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react'
-
+import './index.css'
+import { ArrowUpOutlined,InstagramOutlined ,WhatsAppOutlined, FacebookOutlined} from '@ant-design/icons';
 const Footer = () => {
   return (
     <div>
-      <section class="contact" id="contact">
-        <div class="main-contact">
-          <div class="contact-content">
-            <h4>Services</h4>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </div>
-
-          <div class="contact-content">
-            <h4>Delivery</h4>
-            <li><a href="#home">Uber Eats</a></li>
-            <li><a href="#about">DoorDash</a></li>
-            <li><a href="#menu">ChowNow</a></li>
-            <li><a href="#contact">Toast TakeOut</a></li>
-          </div>
-
-          <div class="contact-content">
-            <h4>Contact</h4>
-            <li><a href="#home">Contact Us</a></li>
-            <li><a href="#about">Press Center</a></li>
-            <li><a href="#menu">Careers</a></li>
-            <li><a href="#contact">FAQ</a></li>
-          </div>
-
+      <div class="footer" id="contact">
+        <img className='img_footer' src='img/footer_img.jpg'/>
+        <div class="wrap_info-footer">
           <div class="contact-content">
             <h4>Follow Us</h4>
-            <li><a href="#home">TikTok</a></li>
-            <li><a href="#about">Twitter</a></li>
-            <li><a href="#menu">Facebook</a></li>
-            <li><a href="#menu">Instagramm</a></li>
+            <div className='wrap_footer'>
+            <li><a href="#home"><InstagramOutlined  style={{fontSize:"30px"}} /></a></li>
+            <li><a href="#about"><WhatsAppOutlined style={{fontSize:"30px"}} /></a></li>
+            <li><a href="#menu"><FacebookOutlined style={{fontSize:"30px"}} /></a></li>
+            {/* <li><a href="#contact">Toast TakeOut</a></li> */}
+            </div>
           </div>
+        <div class="last-text">
+          <p>© Developed 2024 by @phonghoang</p>
         </div>
-      </section>
-      <div class="last-text">
-        <p>© Developed 2023 by Ilya Korobeynikov</p>
+        </div>
       </div>
-      <a href="#home" class="scroll-top">
-        <i class='bx bx-up-arrow-alt' ></i>
-      </a>
+      
+        <a href="#home" class="scroll-top">
+          <ArrowUpOutlined />
+        </a>
     </div>
   )
 }

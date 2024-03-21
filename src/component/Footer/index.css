@@ -1,0 +1,19 @@
+.footer {
+    position: relative;
+    margin-top: 40px;
+}
+.img_footer {
+    min-height: 250px;
+}
+.contact-content {
+    padding-top: 25px;
+}
+.wrap_info-footer {
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+.wrap_footer {
+    display: flex;
+    justify-content: space-evenly;
+}

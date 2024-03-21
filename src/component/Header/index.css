@@ -10,3 +10,7 @@
     display: flex !important;
     justify-content: center;
 }
+.title_logo {
+    font-family: "Madimi One", sans-serif;
+    font-size: 40px;
+}

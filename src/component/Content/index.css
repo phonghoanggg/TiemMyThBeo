@@ -1,0 +1,7 @@
+.product_img {
+    display: flex;
+    justify-content: center;
+}
+.img_pasta-best {
+    width: 80% !important;
+}

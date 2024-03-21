@@ -1,151 +1,131 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-
+import './index.css'
+import { Rate } from 'antd';
 const Content = () => {
+
+  const dataProduct = [
+    {
+      img:"img/my_bo.png",
+      title:"Mỳ sốt bò bằm",
+      description:"Sốt thịt bò bằm đặc trưng kết hợp cùng mỳ Ý.",
+      price:"$59.000",
+      start:"5"
+    },
+    {
+      img:"img/my_cay-xx.png",
+      title:"Mỳ cay xúc xích",
+      description:"Mỳ Ý rán với xúc xích cay, thảo mộc, ngò gai và húng quế Ý.",
+      price:"$59.000",
+      start:"5"
+    },
+    {
+      img:"img/my_giam-bong.png",
+      title:"Mỳ giăm bông và nấm sốt kem",
+      description:"Mỳ Ý, nấm và giăm bông được nấu cùng với sốt kem trắng.",
+      price:"$59.000",
+      start:"5"
+    },
+    {
+      img:"img/my_chay.png",
+      title:"Mỳ Ý Chay Sốt Marinara",
+      description:"Mỳ Ý áp chảo với sốt Marinara, nấm và cà chua đỏ.",
+      price:"$49.000",
+      start:"4"
+    }
+  ]
+
+
   return (
     <div>
         <section class="container">
-        <div class="main-text">
-          <h2>Ingredients</h2>
-          <p>Only the Best for You</p>
-        </div>
-        <div class="container-box">
-          <div class="c-mainbox">
-            <div class="container-img">
-              <img src="img/b1.png" alt="box1"/>
+          <div class="main-text">
+            <h2>Nguyên liệu</h2>
+            <p>Tinh túy cho hương vị đích thực</p>
+          </div>
+          <div class="container-box">
+            <div class="c-mainbox">
+              <div style={{height:"100%", display:"flex", alignItems:"center"}} class="container-img">
+                <img style={{height:"72px", width: "auto"}} src="img/pasta.png" alt="box1"/>
+              </div>
+              <div class="container-text">
+                <p>Mỳ ý và nui</p>
+              </div>
             </div>
-            <div class="container-text">
-              <p>Delicate Dough</p>
+
+            <div class="c-mainbox">
+              <div class="container-img">
+                <img src="img/b2.png" alt="box2"/>
+              </div>
+              <div class="container-text">
+                <p>Cà chua</p>
+              </div>
+            </div>
+
+            <div class="c-mainbox">
+              <div class="container-img">
+                <img src="img/b3.png" alt="box3"/>
+              </div>
+              <div class="container-text">
+                <p>Phô mai bột</p>
+              </div>
+            </div>
+
+            <div class="c-mainbox">
+              <div class="container-img">
+                <img src="img/b4.png" alt="box4"/>
+              </div>
+              <div class="container-text">
+                <p>Xúc xích ý</p>
+              </div>
             </div>
           </div>
-
-          <div class="c-mainbox">
-            <div class="container-img">
-              <img src="img/b2.png" alt="box2"/>
-            </div>
-            <div class="container-text">
-              <p>Fresh Tomatoes</p>
-            </div>
-          </div>
-
-          <div class="c-mainbox">
-            <div class="container-img">
-              <img src="img/b3.png" alt="box3"/>
-            </div>
-            <div class="container-text">
-              <p>Alpine Cheese</p>
-            </div>
-          </div>
-
-          <div class="c-mainbox">
-            <div class="container-img">
-              <img src="img/b4.png" alt="box4"/>
-            </div>
-            <div class="container-text">
-              <p>Italian Sausage</p>
-            </div>
-          </div>
-        </div>
-
         </section>
         <section class="about" id="about">
-        <div class="about-img">
-          <img src="img/a.png" alt=""/>
-        </div>
+          <div class="about-img">
+            <div className='product_img'>
+              <img className='img_pasta-best' src="img/my_tom-cachua.png" alt=""/>
+            </div>
+            <img className='img_best-seller' src="img/best-seller-2.png" alt=""/>
+          </div>
 
-        <div class="about-text">
-          <h2>The Delicious Food<br/> For a Good Mood</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, ipsum?<br/><br/> Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti, dolore pariatur! Enim inventore excepturi laudantium necessitatibus placeat mollitia, incidunt consequatur.</p>
-          <a href="#" class="btn">Choose a Pizza</a>
-        </div>
+          <div class="about-text">
+            <h2>Mỳ tôm sốt kem cà chua</h2>
+            <p>Sự tươi ngon của tôm kết hợp với sốt kem cà chua</p>
+            <a href="#" class="btn">Xem ảnh</a>
+          </div>
 
         </section>
+        {/* menu list */}
         <section class="menu" id="menu">
         <div class="main-text">
-          <h2>Most Popular Pizza</h2>
-          <p>We have selected for You<br/> the most exquisite tastes around the world</p>
+          <h2>Menu mỳ ý</h2>
+          <p>Khám phá hương vị Ý tinh tế với mỳ pasta và sốt đậm đà </p>
         </div>
 
         <div class="menu-content">
-          <div class="row">
-            <img src="img/m1.jpg" alt="main-product1"/>
-            <div class="menu-text">
-              <div class="menu-left">
-                <h4>Margarita</h4>
+          {
+            dataProduct.map((item) => {
+              return (
+                <div class="row">
+                  <div  className='product_img'>
+                    <img  className='img_pasta-best' src={item.img} alt="main-product4"/>
+                  </div>
+                <div class="menu-text">
+                  <div class="menu-left">
+                    <h4>{item.title}</h4>
+                  </div>
+                  <div class="menu-right">
+                    <h5>{item.price}</h5>
+                  </div>
+                </div>
+                <p>{item.description}</p>
+                <Rate disabled allowHalf defaultValue={item.start} />
               </div>
-              <div class="menu-right">
-                <h5>$17.00</h5>
-              </div>
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, magnam.</p>
-            <div class="star">
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-            </div>
-          </div>
+              )
+            }) 
+          }
 
-          <div class="row">
-            <img src="img/m2.jpg" alt="main-product2"/>
-            <div class="menu-text">
-              <div class="menu-left">
-                <h4>Montanara</h4>
-              </div>
-              <div class="menu-right">
-                <h5>$17.00</h5>
-              </div>
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, magnam.</p>
-            <div class="star">
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-            </div>
-          </div>
-
-          <div class="row">
-            <img src="img/m3.jpg" alt="main-product3"/>
-            <div class="menu-text">
-              <div class="menu-left">
-                <h4>Con Carne</h4>
-              </div>
-              <div class="menu-right">
-                <h5>$17.00</h5>
-              </div>
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, magnam.</p>
-            <div class="star">
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-            </div>
-          </div>
-
-          <div class="row">
-            <img src="img/m4.jpg" alt="main-product4"/>
-            <div class="menu-text">
-              <div class="menu-left">
-                <h4>Pepperoni</h4>
-              </div>
-              <div class="menu-right">
-                <h5>$17.00</h5>
-              </div>
-            </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, magnam.</p>
-            <div class="star">
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-              <a href="#"><i class='bx bxs-star' ></i></a>
-            </div>
-          </div>
         </div>
 
       </section>
