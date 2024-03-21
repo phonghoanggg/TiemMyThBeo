@@ -29,10 +29,10 @@ const Header = () => {
         <a  href="#" class="logo">MỲ <span className='title_logo'>NGON</span></a>
         <a href="#" class="logo"><img src="img/logo.png" alt="logo"/></a>
         <ul class="navbar">
-          <li><a className='navigation' href="#home">Home</a></li>
-          <li><a className='navigation' href="#about">About</a></li>
-          <li><a className='navigation' href="#menu">Menu</a></li>
-          <li><a className='navigation' href="#contact">Contact</a></li>
+          <li><a className='navigation' href="#home">Trang chủ</a></li>
+          <li><a className='navigation' href="#about">Giới thiệu</a></li>
+          <li><a className='navigation' href="#menu">Danh sách</a></li>
+          <li><a className='navigation' href="#contact">Liên hệ</a></li>
         </ul>
       </header>
       <section class="md:grid md:grid-cols-4" id="home">

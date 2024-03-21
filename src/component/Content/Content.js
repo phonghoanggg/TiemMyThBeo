@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import './index.css'
 import { Rate } from 'antd';
+import ThemeContext from '../Context/ThemeContext';
 const Content = () => {
+  const [activeFooter, setActiveFooter] = useContext(ThemeContext)
 
   const dataProduct = [
     {
@@ -34,7 +36,9 @@ const Content = () => {
       start:"4"
     }
   ]
-
+  const handleClickBuy = () => {
+    setActiveFooter(true)
+  }
 
   return (
     <div>
@@ -92,7 +96,7 @@ const Content = () => {
           <div class="about-text">
             <h2>Mỳ tôm sốt kem cà chua</h2>
             <p>Sự tươi ngon của tôm kết hợp với sốt kem cà chua</p>
-            <a href="#" class="btn">Xem ảnh</a>
+            <a href="#contact" class="btn">Mua ngay</a>
           </div>
 
         </section>
@@ -107,21 +111,23 @@ const Content = () => {
           {
             dataProduct.map((item) => {
               return (
-                <div class="row">
-                  <div  className='product_img'>
-                    <img  className='img_pasta-best' src={item.img} alt="main-product4"/>
+                <a onClick={() =>handleClickBuy()} href='#contact'>
+                  <div class="row">
+                    <div  className='product_img'>
+                      <img  className='img_pasta-best' src={item.img} alt="main-product4"/>
+                    </div>
+                    <div class="menu-text">
+                      <div class="menu-left">
+                        <h4>{item.title}</h4>
+                      </div>
+                      <div class="menu-right">
+                        <h5>{item.price}</h5>
+                      </div>
+                    </div>
+                    <p>{item.description}</p>
+                    <Rate disabled allowHalf defaultValue={item.start} />
                   </div>
-                <div class="menu-text">
-                  <div class="menu-left">
-                    <h4>{item.title}</h4>
-                  </div>
-                  <div class="menu-right">
-                    <h5>{item.price}</h5>
-                  </div>
-                </div>
-                <p>{item.description}</p>
-                <Rate disabled allowHalf defaultValue={item.start} />
-              </div>
+                </a>
               )
             }) 
           }

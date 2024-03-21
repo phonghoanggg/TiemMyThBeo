@@ -3,7 +3,8 @@
     margin-top: 40px;
 }
 .img_footer {
-    min-height: 250px;
+    height: 200px;
+    width: 100%;
 }
 .contact-content {
     padding-top: 25px;
@@ -16,4 +17,15 @@
 .wrap_footer {
     display: flex;
     justify-content: space-evenly;
+}
+.wrap_footer > li {
+    margin-bottom: 0 !important;
+}
+.contact_footer {
+    display: flex !important;
+    align-items: center;
+}
+.footer_text {
+    padding-left: 10px;
+    color: #fff !important;
 }

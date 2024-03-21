@@ -7,6 +7,8 @@ import 'tailwindcss/tailwind.css';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { createContext, useState } from 'react';
+import ThemeContext from './component/Context/ThemeContext';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -29,13 +31,17 @@ const analytics = getAnalytics(app);
 
 
 function App() {
+  const [activeFooter, setActiveFooter] = useState(false)
+
   return (
     <div className="App">
-      <Header/>
-      <Content/>
-      <Footer/>
-      <script src="https://unpkg.com/scrollreveal"></script>
-      <script type="text/javascript" src="js/jsweb.js"></script>
+      <ThemeContext.Provider value={[activeFooter,setActiveFooter]}>
+        <Header/>
+        <Content/>
+        <Footer/>
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script type="text/javascript" src="js/jsweb.js"></script>
+      </ThemeContext.Provider>
       
     </div>
   );
