@@ -1,11 +1,9 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React,{useContext} from 'react'
+import React from 'react'
 import './index.css'
 import { WhatsAppOutlined, FacebookOutlined} from '@ant-design/icons';
-import ThemeContext from '../Context/ThemeContext';
 const Footer = () => {
   const iconHotline = document.querySelector(".scroll-top")
-  const [activeFooter, setActiveFooter] = useContext(ThemeContext)
 
   if(iconHotline) {
     iconHotline.style.animation = 'shake 0.5s 2';
@@ -16,7 +14,7 @@ const Footer = () => {
         <img className='img_footer' src='img/footer_img.jpg'/>
         <div class="wrap_info-footer">
           <div class="contact-content">
-            <h4 className={activeFooter ? "contact-content-active" : ""} >Đặt hàng ngay tại</h4>
+            <h4>Đặt hàng ngay tại</h4>
             <div className='wrap_footer'>
             <li>
               <a className='contact_footer' href="https://www.facebook.com/profile.php?id=100009209371813">

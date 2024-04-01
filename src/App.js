@@ -1,14 +1,13 @@
 /* eslint-disable jsx-a11y/alt-text */
 import './App.css';
-import Header from './component/Header/Header';
-import Content from './component/Content/Content';
-import Footer from './component/Footer/Footer';
 import 'tailwindcss/tailwind.css';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { createContext, useState } from 'react';
-import ThemeContext from './component/Context/ThemeContext';
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+import {routes} from './routes/index'
+import DefaultComponent from './component/DefaultComponent/DefaultComponent';
+import { Fragment } from 'react';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -31,17 +30,30 @@ const analytics = getAnalytics(app);
 
 
 function App() {
-  const [activeFooter, setActiveFooter] = useState(false)
 
   return (
     <div className="App">
-      <ThemeContext.Provider value={[activeFooter,setActiveFooter]}>
-        <Header/>
-        <Content/>
-        <Footer/>
+        <Router>
+          <Routes>
+            {
+              routes.map((route) => {
+                const Page = route.page
+                const Layout = route.isShowHeader ? DefaultComponent : Fragment
+                return (
+                  <Route path={route.path} element={
+                   <Layout>
+                     <Page/>
+                   </Layout>
+                  } />
+                )
+              })
+            }
+          </Routes>
+        </Router>
+          
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript" src="js/jsweb.js"></script>
-      </ThemeContext.Provider>
+
       
     </div>
   );

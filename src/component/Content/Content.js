@@ -2,9 +2,8 @@
 import React, { useContext, useState } from 'react'
 import './index.css'
 import { Rate } from 'antd';
-import ThemeContext from '../Context/ThemeContext';
+import SlideHeader from '../SlideHeader/SlideHeader';
 const Content = () => {
-  const [activeFooter, setActiveFooter] = useContext(ThemeContext)
 
   const dataProduct = [
     {
@@ -36,12 +35,11 @@ const Content = () => {
       start:"4"
     }
   ]
-  const handleClickBuy = () => {
-    setActiveFooter(true)
-  }
+
 
   return (
     <div>
+        <SlideHeader/>
         <section class="container">
           <div class="main-text">
             <h2>Nguyên liệu</h2>
@@ -111,7 +109,7 @@ const Content = () => {
           {
             dataProduct.map((item) => {
               return (
-                <a onClick={() =>handleClickBuy()} href='#contact'>
+                <a href='#contact'>
                   <div class="row">
                     <div  className='product_img'>
                       <img  className='img_pasta-best' src={item.img} alt="main-product4"/>
