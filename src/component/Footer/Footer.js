@@ -32,15 +32,12 @@ const Footer = () => {
             </div>
           </div>
         <div class="last-text">
-          <p> 
-            <a href='https://www.facebook.com/phong.hoangnghia'>© Developed 2024 by @phonghoang</a> 
-          </p>
         </div>
         </div>
       </div>
-        <a href="tel:0983952421" class="scroll-top">
-            <img className='img_hotline sm:h-14 sm:w-14 h-10 w-10' src='img/hotline.png'/>
-          </a>
+        <a  href='https://docs.google.com/forms/d/e/1FAIpQLSfCbpEFvhg3lMyeo1CaAYkTH9xo19ySoogdtUfsE10jPQ8o0g/viewform?usp=sf_link' class="scroll-top">
+            <img style={{borderRadius:"99px"}} className='img_hotline h-14 w-14' src='img/cart.jpg'/>
+        </a>
     </div>
   )
 }
