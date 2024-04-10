@@ -12,7 +12,7 @@ const SlideHeader = () => {
     <section class="md:grid md:grid-cols-4" id="home">
     <div class="home-text md:col-span-2 mb-5 md:mb-0 flex items-center">
       <div>
-        <h1><span>Chào mừng</span> bạn đến với tiệm mỳ ngon của tôi <HeartIcon style={{ color: '#FF9100'}} /></h1>
+        <h1><span style={{color:"#ff9100"}}>Chào mừng</span> bạn đến với tiệm mỳ ngon của tôi <HeartIcon style={{ color: '#FF9100'}} /></h1>
         <p>Chìm đắm trong hương vị - Mỳ tươi mỗi ngày!</p>
         <a href="#about" class="btn">Xem menu</a>
       </div>

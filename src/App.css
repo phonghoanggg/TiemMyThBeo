@@ -42,7 +42,7 @@ header{
 	color: var(--text-color);
 }
 span{
-	color: var(--main-color);
+	/* color: var(--main-color); */
 }
 .navbar{
 	display: flex;
@@ -245,9 +245,9 @@ header.sticky{
 	font-size: 17px;
 	margin-right: 4px;
 }
-.row:hover{
+/* .row:hover{
 	transform: scale(1.02);
-}
+} */
 .contact{
 	padding: 50px 15% 40px;
 }

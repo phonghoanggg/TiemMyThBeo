@@ -5,3 +5,7 @@
 .img_pasta-best {
     width: 80% !important;
 }
+.wrapRate {
+    display: flex;
+    justify-content: space-between;
+}

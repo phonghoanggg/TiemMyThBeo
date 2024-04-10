@@ -1,11 +1,4 @@
 import React from 'react'
-
-const NotFoundPage = () => {
-  return (
-    <div>
-      Not found page
-    </div>
-  )
-}
-
-export default NotFoundPage
+import { Empty } from 'antd';
+const App = () => <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+export default App;

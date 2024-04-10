@@ -1,4 +1,21 @@
 
+*{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: 'Raleway', sans-serif;
+	text-decoration: none;
+	list-style: none;
+	scroll-behavior: smooth;
+}
+:root{
+	--text-color: #302e29;
+	--text-white: #fff;
+	--main-color: #ff9100;
+	--second-color: #858585;
+	--bg-color: #fffbf6;
+
+}
 .header {
     background-color: #fff ;
 }
@@ -13,4 +30,5 @@
 .title_logo {
     font-family: "Madimi One", sans-serif;
     font-size: 40px;
+    color: var(--main-color)
 }

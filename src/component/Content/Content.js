@@ -3,6 +3,11 @@ import React, { useContext, useState } from 'react'
 import './index.css'
 import { Rate } from 'antd';
 import SlideHeader from '../SlideHeader/SlideHeader';
+import { MinusOutlined, PlusOutlined, QuestionOutlined } from '@ant-design/icons';
+import { Avatar, Badge, Button, Switch, Space } from 'antd';
+import ThemeContext from '../../hook/CountProvider'
+
+const ButtonGroup = Button.Group;
 const Content = () => {
 
   const dataProduct = [
@@ -35,6 +40,8 @@ const Content = () => {
       start:"4"
     }
   ]
+
+  const [increase,decline,] = useContext(ThemeContext)
 
 
   return (
@@ -107,10 +114,9 @@ const Content = () => {
 
         <div class="menu-content">
           {
-            dataProduct.map((item) => {
+            dataProduct.map((item, index) => {
               return (
-                <a href='#contact'>
-                  <div class="row">
+                  <div key={index} class="row">
                     <div  className='product_img'>
                       <img  className='img_pasta-best' src={item.img} alt="main-product4"/>
                     </div>
@@ -123,9 +129,14 @@ const Content = () => {
                       </div>
                     </div>
                     <p>{item.description}</p>
+                    <div className='wrapRate'>
                     <Rate disabled allowHalf defaultValue={item.start} />
+                      <ButtonGroup>
+                        <Button onClick={decline} icon={<MinusOutlined />} />
+                        <Button onClick={increase} icon={<PlusOutlined />} />
+                      </ButtonGroup>
+                    </div>
                   </div>
-                </a>
               )
             }) 
           }

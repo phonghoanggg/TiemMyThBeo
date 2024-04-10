@@ -53,8 +53,6 @@ function App() {
           
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript" src="js/jsweb.js"></script>
-
-      
     </div>
   );
 }

@@ -35,9 +35,9 @@ const Footer = () => {
         </div>
         </div>
       </div>
-        <a  href='https://docs.google.com/forms/d/e/1FAIpQLSfCbpEFvhg3lMyeo1CaAYkTH9xo19ySoogdtUfsE10jPQ8o0g/viewform?usp=sf_link' class="scroll-top">
+        {/* <a  href='https://docs.google.com/forms/d/e/1FAIpQLSfCbpEFvhg3lMyeo1CaAYkTH9xo19ySoogdtUfsE10jPQ8o0g/viewform?usp=sf_link' class="scroll-top">
             <img style={{borderRadius:"99px"}} className='img_hotline h-14 w-14' src='img/cart.jpg'/>
-        </a>
+        </a> */}
     </div>
   )
 }
