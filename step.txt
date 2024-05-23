@@ -1,0 +1,5 @@
+1. Khi sử dụng mutation sẽ cung cấp cho các trường VD: isSucess, isError, isWarning.... Dùng các trường trên để có thể 
+check các trường hợp call API lỗi hoặc thành công
+2. Xử lý phần đăng nhập
+    +) Khi đăng nhập thành công => sẽ trả về {status, message, access_token, refesh_token}. Tuy nhiên sẽ ẩn phần refesh_token
+    đi và lưu refesh_token vào cookie

@@ -2,10 +2,8 @@ import React, { createContext, Fragment, useState } from 'react'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import ThemeContext from '../../hook/CountProvider'
-
 const DefaultComponent = ({children}) => {
   const [count, setCount] = useState(0);
-  const [show, setShow] = useState(true);
   const increase = () => {
     setCount(count + 1);
   };

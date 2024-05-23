@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 import './App.css';
-import 'tailwindcss/tailwind.css';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import {routes} from './routes/index'
 import DefaultComponent from './component/DefaultComponent/DefaultComponent';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -30,7 +31,13 @@ const analytics = getAnalytics(app);
 
 
 function App() {
-
+  
+  // const fetchAPI = async() => {
+  //   const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/get-all`)
+  //   return res
+  // }
+  // const query = useQuery('todos', fetchAPI)
+  // console.log("query",query.data.data.data)
   return (
     <div className="App">
         <Router>

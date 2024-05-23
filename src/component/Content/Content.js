@@ -12,6 +12,7 @@ const Content = () => {
 
   const dataProduct = [
     {
+      id:1,
       img:"img/my_bo.png",
       title:"Mỳ sốt bò bằm",
       description:"Sốt thịt bò bằm đặc trưng kết hợp cùng mỳ Ý.",
@@ -19,6 +20,7 @@ const Content = () => {
       start:"5"
     },
     {
+      id:2,
       img:"img/my_cay-xx.png",
       title:"Mỳ cay xúc xích",
       description:"Mỳ Ý rán với xúc xích cay, thảo mộc, ngò gai và húng quế Ý.",
@@ -26,6 +28,7 @@ const Content = () => {
       start:"5"
     },
     {
+      id:3,
       img:"img/my_giam-bong.png",
       title:"Mỳ giăm bông và nấm sốt kem",
       description:"Mỳ Ý, nấm và giăm bông được nấu cùng với sốt kem trắng.",
@@ -33,6 +36,7 @@ const Content = () => {
       start:"5"
     },
     {
+      id:4,
       img:"img/my_chay.png",
       title:"Mỳ Ý Chay Sốt Marinara",
       description:"Mỳ Ý áp chảo với sốt Marinara, nấm và cà chua đỏ.",
