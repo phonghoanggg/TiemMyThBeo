@@ -1,0 +1,4 @@
+:where(.css-dev-only-do-not-override-11xg00t).ant-form-horizontal .ant-form-item-label {
+    min-width:138px !important;
+    text-align: start;
+}

@@ -86,8 +86,9 @@ const Registrantion = ({openModalRegister,setOpenModalRegister}) => {
         <Input />
       </Form.Item>
       <Form.Item
+      style={{minWidth:"138px"}}
         name="password"
-        label="Password"
+        label="Mật khẩu"
         rules={[
           {
             required: true,
@@ -100,7 +101,7 @@ const Registrantion = ({openModalRegister,setOpenModalRegister}) => {
       </Form.Item>
       <Form.Item
         name="confirm"
-        label="Confirm Password"
+        label="Nhập lại mật khẩu"
         dependencies={['password']}
         hasFeedback
         rules={[

@@ -40,7 +40,6 @@ function App() {
 
   useEffect(() => {
     const {decoded, storageData} = handleDecoded()
-    console.log("decoded",decoded,storageData)
     if(decoded?.id) {
       handleGetDetailUser(decoded?.id, storageData)
     }
@@ -70,7 +69,6 @@ function App() {
     return Promise.reject(error);
   });
   const handleGetDetailUser = async(id, token) => {
-    console.log("idddđ", id, token)
     const res = await UserService.getDetailsUser(id, token)
     dispatch(updateUser({...res?.data,access_token: token}))
   }

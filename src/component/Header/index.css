@@ -36,3 +36,11 @@
 	font-weight: 600;
 	cursor: pointer;
 }
+.inforItem{
+	padding: 10px;
+	font-size: 18px;
+	cursor: pointer;
+}
+.inforItem:hover {
+	background-color: #f7f5f5;
+}
