@@ -8,6 +8,7 @@ import ThemeContext from '../../hook/CountProvider';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import Registrantion from '../Registration/Registrantion'
 import Login from "../LogInPage/LogInPage"
+import { useSelector } from 'react-redux';
 const Header = () => {
   const [scroll, setScroll] = useState(false)
   const [openModalRegister, setOpenModalRegister] = useState(false)
@@ -23,7 +24,8 @@ const Header = () => {
       window.addEventListener('scroll', hanldeScroll)
     }
   },[])
-  console.log("count",count)
+  const user = useSelector((state) => state.user)
+  console.log("user",user)
   return (
       <header class={scroll ? 'headerScroll' : 'header' }>
         <a  href="#" class="logo">MỲ <span className='title_logo'>NGON</span></a>
@@ -34,7 +36,9 @@ const Header = () => {
           <li><a className='navigation' href="#about">Giới thiệu</a></li>
           <li><a className='navigation' href="#menu">Danh sách</a></li>
           <li><a className='navigation' href="#contact">Liên hệ</a></li>
-          <li><a className='register' onClick={() => setOpenModalRegister(true)}>Đăng ký</a>/<a className='login' onClick={() => setOpenModalLogin(true)}>Đăng nhập</a></li>
+          {
+             user?.name ? (<li>{user?.name}</li>) : (<li><a className='register' onClick={() => setOpenModalRegister(true)}>Đăng ký</a>/<a className='login' onClick={() => setOpenModalLogin(true)}>Đăng nhập</a></li>)
+          }
           {/* giỏ hàng */}
           {/* <Badge count={count} style={{backgroundColor:"#FF9100", color:"white !important"}}>
           <ShoppingCartOutlined style={{fontSize:30}} />

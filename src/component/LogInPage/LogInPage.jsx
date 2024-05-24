@@ -4,10 +4,12 @@ import { useMuttionHooksLogin } from '../../hook/useMutationHook';
 import *  as UserService from '../../services/UserServices' 
 import { Loading } from '../LoadingComponent/Loading';
 import { jwtDecode } from "jwt-decode";
-
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../../redux/slides/userSlide';
+import * as message from "../Message/Message"
 
 const LoginComponent = ({openModalLogin,setOpenModalLogin}) => {
-
+  const dispatch = useDispatch()
   const mutation = useMuttionHooksLogin(
     data => UserService.loginUser(data)
   )
@@ -24,10 +26,21 @@ const LoginComponent = ({openModalLogin,setOpenModalLogin}) => {
       localStorage.setItem("access_token", data?.access_token)
       if(data?.access_token) {
         const decoded = jwtDecode(data?.access_token) 
-        console.log("decoded",decoded)
+        if(decoded?.id) {
+          handleGetDetailUser(decoded?.id, data?.access_token)
+        }
       }
+      message.success("Đăng nhập thành công")
+      setOpenModalLogin(false);
+    } else if(isError) {
+      message.error("Tài khoản hoặc mật khẩu không đúng")
     }
-  },[isSuccess])
+  },[isSuccess, isError])
+
+  const handleGetDetailUser = async(id, token) => {
+    const res = await UserService.getDetailsUser(id, token)
+    dispatch(updateUser({...res?.data,access_token: token}))
+  }
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
