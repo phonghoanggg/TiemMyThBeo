@@ -1,6 +1,7 @@
 import React, { createContext, Fragment, useState } from 'react'
 import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
+import './index.css'
 import ThemeContext from '../../hook/CountProvider'
 const DefaultComponent = ({children}) => {
   const [count, setCount] = useState(0);
@@ -17,7 +18,9 @@ const DefaultComponent = ({children}) => {
   return (
         <ThemeContext.Provider value={[increase,decline,count]}>
             <Header/>
+            <div className='defaultMarginPC'>
             {children}
+            </div>
             <Footer/>
         </ThemeContext.Provider>
 

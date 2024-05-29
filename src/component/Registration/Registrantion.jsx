@@ -13,8 +13,6 @@ const Registrantion = ({openModalRegister,setOpenModalRegister}) => {
   )
   const {data, isLoading, isSuccess, isError} = mutation
 
-
-  console.log("isSuccess",isSuccess,"isError",isError)
   useEffect(() => {
     if(isSuccess) {
       message.success("Đăng ký thành công")

@@ -20,7 +20,7 @@ const LoginComponent = ({openModalLogin,setOpenModalLogin}) => {
     })
   };
   const {data, isLoading, isSuccess, isError} = mutation
-
+  console.log("datakaka",data)
   useEffect(() => {
     if(isSuccess) {
       localStorage.setItem("access_token", JSON.stringify(data?.access_token))

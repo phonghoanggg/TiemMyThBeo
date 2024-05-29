@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import *  as UserService from '../../services/UserServices' 
 import { resetUser } from '../../redux/slides/userSlide';
 import { Loading } from '../LoadingComponent/Loading';
+import { useNavigate } from "react-router-dom";
+
 
 
 const Header = () => {
@@ -19,7 +21,9 @@ const Header = () => {
   const [openModalRegister, setOpenModalRegister] = useState(false)
   const [openModalLogin, setOpenModalLogin] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [userName, setUserName] = useState('')
   const [, ,count] = useContext(ThemeContext)
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() =>{
     const hanldeScroll = () => {
@@ -37,18 +41,26 @@ const Header = () => {
     await UserService.logoutUser()
     dispatch(resetUser())
     localStorage.removeItem("access_token")
+    navigate("/")
     setLoading(false)
   }
+  console.log("userrrrrr", user)
+  useEffect(() => {
+    setLoading(true)
+    setUserName(user?.name)
+    setLoading(false)
+  },[user])
   const content = (
     <div>
-      <p className='inforItem'>Thông tin cá nhân</p>
+      <p className='inforItem' onClick={() => navigate("/profile") }>Thông tin cá nhân</p>
       <p className='inforItem' onClick={handleLogout}>Đăng xuất</p>
     </div>
   );
+  
   return (
       <header class={scroll ? 'headerScroll' : 'header' }>
-        <a  href="#" class="logo">MỲ <span className='title_logo'>NGON</span></a>
-        <a style={{marginRight:"10px"}} href="#" class="logo">
+        <a style={{cursor:"pointer"}} class="logo"  onClick={() => navigate("/") }>MỲ <span className='title_logo'>NGON</span></a>
+        <a style={{marginRight:"10px"}} onClick={() => navigate("/") } class="logo">
         </a>
         <ul class="navbar">
           <li><a className='navigation' href="#home">Trang chủ</a></li>
@@ -57,10 +69,10 @@ const Header = () => {
           <li><a className='navigation' href="#contact">Liên hệ</a></li>
           <Loading isLoading={loading} > 
           {
-             user?.name ? (
+             user?.access_token ? (
             <li>
-              <Popover className='popverItem' content={content} trigger="click">
-                <span style={{cursor:'pointer'}}>{user?.name}</span>
+              <Popover className='popverItem' content={content} trigger="hover">
+                <span style={{cursor:'pointer'}}>{userName?.length ? userName : user?.email}</span>
               </Popover>
             </li>) : (<li><a className='register' onClick={() => setOpenModalRegister(true)}>Đăng ký</a>/<a className='login' onClick={() => setOpenModalLogin(true)}>Đăng nhập</a></li>)
           }
