@@ -5,7 +5,7 @@ import './index.css'
 import 'tailwindcss/tailwind.css';
 import { Avatar, Badge, Popover } from 'antd';
 import ThemeContext from '../../hook/CountProvider';
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import Registrantion from '../Registration/Registrantion'
 import Login from "../LogInPage/LogInPage"
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +22,9 @@ const Header = () => {
   const [openModalLogin, setOpenModalLogin] = useState(false)
   const [loading, setLoading] = useState(false)
   const [userName, setUserName] = useState('')
+  const [userAvatar, setUserAvatar] = useState('')
   const [, ,count] = useContext(ThemeContext)
+  const user = useSelector((state) => state.user)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() =>{
@@ -35,7 +37,6 @@ const Header = () => {
       window.addEventListener('scroll', hanldeScroll)
     }
   },[])
-  const user = useSelector((state) => state.user)
   const handleLogout = async () => {
     setLoading(true)
     await UserService.logoutUser()
@@ -44,12 +45,13 @@ const Header = () => {
     navigate("/")
     setLoading(false)
   }
-  console.log("userrrrrr", user)
   useEffect(() => {
     setLoading(true)
     setUserName(user?.name)
+    setUserAvatar(user?.avatar)
     setLoading(false)
-  },[user])
+  },[user?.name, user?.avatar])
+
   const content = (
     <div>
       <p className='inforItem' onClick={() => navigate("/profile") }>Thông tin cá nhân</p>
@@ -72,7 +74,8 @@ const Header = () => {
              user?.access_token ? (
             <li>
               <Popover className='popverItem' content={content} trigger="hover">
-                <span style={{cursor:'pointer'}}>{userName?.length ? userName : user?.email}</span>
+                <span style={{display:"flex", alignItems:"center"}}> {userAvatar ? (<img style={{height:"30px", width:"30px", borderRadius:"99px", objectFit:"cover", marginRight:"5px"}} src={userAvatar} alt='avatar'/>) : (<UserOutlined style={{fontSize:"20px",marginRight:"5px"}} />)}  </span>
+                <span style={{cursor:'pointer', fontFamily:"Madimi One, sans-serif", fontSize:"20px"}}>{userName?.length ? userName : user?.email}</span>
               </Popover>
             </li>) : (<li><a className='register' onClick={() => setOpenModalRegister(true)}>Đăng ký</a>/<a className='login' onClick={() => setOpenModalLogin(true)}>Đăng nhập</a></li>)
           }

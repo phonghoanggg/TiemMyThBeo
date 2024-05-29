@@ -9,6 +9,7 @@ import { updateUser } from '../../redux/slides/userSlide';
 import { UploadOutlined } from '@ant-design/icons';
 import {getBase64} from '../../until'
 import './index.css'
+import { useNavigate } from 'react-router';
 
 const layout = {
   labelCol: {
@@ -42,19 +43,14 @@ const ProfilePage = () => {
   const [avatar, setAvatar] = useState(user.avatar)
   const [phone, setPhone] = useState(user.phone)
   const [checkLoading, setCheckLoading] = useState(false)
-  console.log("user",user)
-
-  const handleChangeImg = async({fileList}) => {
-    const file = fileList[0]
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setAvatar(file.preview)
-  }
-
+  
+  const navigate = useNavigate()
   const mutation = useMuttionHooksUpdateUser(
     (data) => UserService.updateUser(data)
   )
+
+  const {data, isLoading,isSuccess,isError} = mutation
+
   useEffect(() => {
     setName( user.name)
     setEmail(user.email)
@@ -62,43 +58,41 @@ const ProfilePage = () => {
     setAvatar(user.avatar)
     setPhone(user.phone)
   },[user])
-  
-  const {data, isLoading,isSuccess,isError} = mutation
-  console.log("kekeek",data,isSuccess)
 
   useEffect(() => {
     if(isSuccess) {
-      message.success("Cập nhật thành công")
-      handleGetDetailUser(user?.id, user?.access_token)
+      setCheckLoading(true)
+      setTimeout(() => {
+        handleGetDetailUser(user?.id, user?.access_token)
+      },5000)
     } else if(isError) {
       message.error("Cập nhật thất bại")
     }
   },[isSuccess,isError])
 
-  const onFinish = async (values) => {
-    await mutation.mutate(
-      {
-      id: user?.id,
-      name,
-      email,
-      address,
-      avatar,
-      phone,
-      access_token: user?.access_token
-    })
-  };
-
   const handleGetDetailUser = async(id, token) => {
-    const res = await UserService.getDetailsUser(id, token)
-    console.log("ressss", res)
-    dispatch(updateUser({...res?.data,access_token: token}))
-  
+    try {
+      const res = await UserService.getDetailsUser(id, token)
+      dispatch(updateUser({...res?.data,access_token: token}))
+    } finally {
+      setCheckLoading(false)
+      message.success("Cập nhật thành công")
+    }
   }
+  const handleChangeImg = async({fileList}) => {
+    const file = fileList[0]
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setAvatar(file.preview)
+  }
+  const onFinish = async () => {
+    await mutation.mutate({id: user?.id,name,email,address,avatar,phone,access_token: user?.access_token})
+  };
+  console.log("isLoading",isLoading)
 
-
- console.log("name",name)
   return (
-   <Loading isLoading={isLoading}>
+   <Loading isLoading={isLoading || checkLoading }>
      <Form
       {...layout}
       name="nest-messages"
@@ -116,81 +110,6 @@ const ProfilePage = () => {
       }
       validateMessages={validateMessages}
     >
-      {/* <Form.Item
-        onMetaChange={(e) => setName(e)}
-        name={['name']}
-        label="Tên"
-        rules={[
-          {
-            required: true,
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        onMetaChange={(e) => setEmail(e)}
-        name={'email'}
-        label="Email"
-        rules={[
-          {
-            type: 'email',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        onMetaChange={(e) => setPhone(e)}
-        name={['phone']}
-        label="Số điện thoại"
-        rules={[
-          {
-            type: 'phone',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        onMetaChange={(e) => setAddress(e)}
-        name={['address']}
-        label="Địa chỉ"
-        rules={[
-          {
-            type: 'address',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name={['avarta']}
-        label="Avarta"
-        rules={[
-          {
-            type: 'avatar',
-          },
-        ]}
-      >
-        <div style={{display:"flex", alignItems:'center'}}>
-          <Upload onChange={handleChangeImg}>
-            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-          </Upload>
-          {avatar && (<img src={avatar} style={{height:"50px", width:"50px", borderRadius:"99px", objectFit:"cover", marginLeft:"20px"}}/>)}
-        </div>
-      </Form.Item>
-  
-      <Form.Item
-        wrapperCol={{
-          ...layout.wrapperCol,
-          offset: 8,
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item> */}
    <div class="form_wrap">
    <div class="form-container">
       <div class="form-group">
@@ -219,23 +138,23 @@ const ProfilePage = () => {
           ]}
         >
           <div style={{display:"flex", alignItems:'center'}}>
-            <Upload onChange={handleChangeImg}>
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            <Upload onChange={handleChangeImg} maxCount={1} >
+              <Button icon={<UploadOutlined />}>Tải ảnh</Button>
             </Upload>
-            {avatar && (<img src={avatar} style={{height:"50px", width:"50px", borderRadius:"99px", objectFit:"cover", marginLeft:"20px"}}/>)}
+            {avatar && (<img src={avatar} style={{height:"50px", width:"50px", borderRadius:"99px", objectFit:"cover", marginLeft:"20px"}} alt='avatar' /> )}
           </div>
       </Form.Item>
       {/* <Button type="primary" onClick={onFinish}>Lưu</Button> */}
-      <Form.Item
-        wrapperCol={{
-          ...layout.wrapperCol,
-          offset: 8,
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item> 
+     
+        <div class="btn_footer">
+          <Button class="btn_back" type="text" htmlType="submit" onClick={() => navigate("/")}>
+            Trở về
+          </Button>
+          <Button type="primary" htmlType="submit">
+            Lưu
+          </Button>
+        </div>
+
     </div>
    </div>
     </Form>

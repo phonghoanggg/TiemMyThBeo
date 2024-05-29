@@ -16,7 +16,6 @@ export const useMuttionHooksRegister = (type) => {
 export const useMuttionHooksUpdateUser = (type) => {
     const mutation = useMutation({
         mutationFn:(data)=> {
-            console.log("dataaaaa", data)
             const {id,access_token, ...rests} = data
             UserService.updateUser(id,rests,access_token)
         }
