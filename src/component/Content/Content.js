@@ -1,53 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useContext, useState } from 'react'
 import './index.css'
-import { Rate } from 'antd';
 import SlideHeader from '../SlideHeader/SlideHeader';
-import { MinusOutlined, PlusOutlined, QuestionOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Button, Switch, Space } from 'antd';
-import ThemeContext from '../../hook/CountProvider'
+import * as ProductServices from '../../services/ProductServices'
+import { useQuery } from 'react-query'
+import { ProductCard } from './ProductCard/ProductCard';
 
-const ButtonGroup = Button.Group;
 const Content = () => {
 
-  const dataProduct = [
-    {
-      id:1,
-      img:"img/my_bo.png",
-      title:"Mỳ sốt bò bằm",
-      description:"Sốt thịt bò bằm đặc trưng kết hợp cùng mỳ Ý.",
-      price:"$59.000",
-      start:"5"
-    },
-    {
-      id:2,
-      img:"img/my_cay-xx.png",
-      title:"Mỳ cay xúc xích",
-      description:"Mỳ Ý rán với xúc xích cay, thảo mộc, ngò gai và húng quế Ý.",
-      price:"$59.000",
-      start:"5"
-    },
-    {
-      id:3,
-      img:"img/my_giam-bong.png",
-      title:"Mỳ giăm bông và nấm sốt kem",
-      description:"Mỳ Ý, nấm và giăm bông được nấu cùng với sốt kem trắng.",
-      price:"$59.000",
-      start:"5"
-    },
-    {
-      id:4,
-      img:"img/my_chay.png",
-      title:"Mỳ Ý Chay Sốt Marinara",
-      description:"Mỳ Ý áp chảo với sốt Marinara, nấm và cà chua đỏ.",
-      price:"$49.000",
-      start:"4"
-    }
-  ]
-
-  const [increase,decline,] = useContext(ThemeContext)
-
-
+  const fetchProductAll = async () => {
+    const res = await ProductServices.getAllProduct()
+    return res
+  }
+  const {isLoading, data:products } = useQuery(['products'], fetchProductAll, {retry: 3 , retryDelay: 1000})
   return (
     <div>
         <SlideHeader/>
@@ -118,30 +83,9 @@ const Content = () => {
 
         <div class="menu-content">
           {
-            dataProduct.map((item, index) => {
-              return (
-                  <div key={index} class="row">
-                    <div  className='product_img'>
-                      <img  className='img_pasta-best' src={item.img} alt="main-product4"/>
-                    </div>
-                    <div class="menu-text">
-                      <div class="menu-left">
-                        <h4>{item.title}</h4>
-                      </div>
-                      <div class="menu-right">
-                        <h5>{item.price}</h5>
-                      </div>
-                    </div>
-                    <p>{item.description}</p>
-                    <div className='wrapRate'>
-                    <Rate disabled allowHalf defaultValue={item.start} />
-                      <ButtonGroup>
-                        <Button onClick={decline} icon={<MinusOutlined />} />
-                        <Button onClick={increase} icon={<PlusOutlined />} />
-                      </ButtonGroup>
-                    </div>
-                  </div>
-              )
+            products?.data.map((item, index) => {
+              console.log("item_ketID", item._id)
+              return  <ProductCard dataProduct={item} key={item._id} />
             }) 
           }
 

@@ -55,6 +55,11 @@ const Header = () => {
   const content = (
     <div>
       <p className='inforItem' onClick={() => navigate("/profile") }>Thông tin cá nhân</p>
+      {
+        user?.isAdmin && (
+          <p className='inforItem' onClick={() => navigate("/system/admin")}>Quản lý hệ thống</p>
+        )
+      }
       <p className='inforItem' onClick={handleLogout}>Đăng xuất</p>
     </div>
   );

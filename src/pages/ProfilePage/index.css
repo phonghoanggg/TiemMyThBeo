@@ -73,3 +73,8 @@ button:focus {
     display: flex;
     gap: 10px;
 }
+.error_text {
+    font-size: 14px !important;
+    font-weight: 500 !important; 
+    color: red !important;
+}

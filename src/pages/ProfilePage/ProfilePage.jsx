@@ -10,6 +10,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import {getBase64} from '../../until'
 import './index.css'
 import { useNavigate } from 'react-router';
+import TextArea from 'antd/es/input/TextArea';
 
 const layout = {
   labelCol: {
@@ -43,7 +44,9 @@ const ProfilePage = () => {
   const [avatar, setAvatar] = useState(user.avatar)
   const [phone, setPhone] = useState(user.phone)
   const [checkLoading, setCheckLoading] = useState(false)
-  
+  const [emailError, setEmailError] = useState(null)
+  const [phoneError, setPhoneError] = useState(false)
+
   const navigate = useNavigate()
   const mutation = useMuttionHooksUpdateUser(
     (data) => UserService.updateUser(data)
@@ -51,6 +54,50 @@ const ProfilePage = () => {
 
   const {data, isLoading,isSuccess,isError} = mutation
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+  function isValidPhoneNumber(phoneNumber) {
+    let cleaned = phoneNumber.replace(/\D/g, '');
+
+    if (cleaned.length !== 10 && cleaned.length !== 11) {
+        return false;
+    }
+
+    const validPrefixes = [
+        '03', '05', '07', '08', '09', 
+        '021', '022', '023', '024', '025', '026', '027', '028', '029' // Đầu số cố định
+    ];
+
+    let prefix = cleaned.slice(0, 2);
+    if (prefix === '02') {
+        prefix = cleaned.slice(0, 3);
+    }
+
+    return validPrefixes.includes(prefix);
+}
+
+  const handleChangeNumber =(e) => {
+    const valueInput = e.target.value
+    setPhone(valueInput)
+
+    if(!isValidPhoneNumber(valueInput)) {
+      setPhoneError(true)
+    } else {
+      setPhoneError(false)
+    }
+  }
+  console.log("first", phoneError)
+  const handleChangeEmail = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    if (!validateEmail(value)) {
+      setEmailError('Email không hợp lệ');
+    } else {
+      setEmailError(null);
+    }
+  }
   useEffect(() => {
     setName( user.name)
     setEmail(user.email)
@@ -89,7 +136,6 @@ const ProfilePage = () => {
   const onFinish = async () => {
     await mutation.mutate({id: user?.id,name,email,address,avatar,phone,access_token: user?.access_token})
   };
-  console.log("isLoading",isLoading)
 
   return (
    <Loading isLoading={isLoading || checkLoading }>
@@ -118,15 +164,18 @@ const ProfilePage = () => {
       </div>
       <div class="form-group">
           <span>Email</span>
-          <input type="text" placeholder='Nhập email...' value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="email" placeholder='Nhập email...' value={email} onChange={handleChangeEmail} />
+          {emailError && <span class="error_text">{emailError}</span>}
       </div>
       <div class="form-group">
           <span>Địa chỉ</span>
-          <input type="text" placeholder='Nhập địa chỉ...' value={address} onChange={(e) => setAddress(e.target.value)} />
+          {/* <input type="area" placeholder='Nhập địa chỉ...' value={address} onChange={(e) => setAddress(e.target.value)} /> */}
+          <TextArea rows={4} value={address} onChange={(e) => setAddress(e.target.value)} />
       </div>
       <div class="form-group">
           <span>Số điện thoại</span>
-          <input type="text" placeholder='Nhập số điện thoại...' value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <input type="text" placeholder='Nhập số điện thoại...' value={phone} onChange={handleChangeNumber} />
+          {phoneError && <span class="error_text">Số điện thoại không hợp lệ</span>}
       </div>
       <Form.Item
           name={['avatar']}

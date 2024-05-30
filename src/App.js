@@ -6,14 +6,13 @@ import { getAnalytics } from "firebase/analytics";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import {routes} from './routes/index'
 import DefaultComponent from './component/DefaultComponent/DefaultComponent';
-import { Fragment, useEffect } from 'react';
-import axios from 'axios';
-import { useQuery } from 'react-query';
+import { Fragment, useEffect, useState } from 'react';
 import { isJsonString } from './until';
 import { jwtDecode } from "jwt-decode";
 import *  as UserService from './services/UserServices' 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from './redux/slides/userSlide';
+import { Loading } from './component/LoadingComponent/Loading';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -37,12 +36,18 @@ const analytics = getAnalytics(app);
 
 function App() {
   const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false)
+  const user = useSelector((state) => state.user)
+  console.log("first",user)
 
   useEffect(() => {
+  setIsLoading(true)
     const {decoded, storageData} = handleDecoded()
     if(decoded?.id) {
       handleGetDetailUser(decoded?.id, storageData)
     }
+    setIsLoading(false)
+
   },[])
 
   const handleDecoded = () => {
@@ -75,14 +80,17 @@ function App() {
 
   return (
     <div className="App">
+       <Loading isLoading={isLoading}  >
         <Router>
           <Routes>
             {
               routes.map((route) => {
                 const Page = route.page
+                // Check quyền admin
+                const isCheckAuth = !route.isPrivate || user.isAdmin
                 const Layout = route.isShowHeader ? DefaultComponent : Fragment
                 return (
-                  <Route path={route.path} element={
+                  <Route key={route.path} path={ route.path} element={
                    <Layout>
                      <Page/>
                    </Layout>
@@ -92,6 +100,7 @@ function App() {
             }
           </Routes>
         </Router>
+       </Loading>
           
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript" src="js/jsweb.js"></script>
