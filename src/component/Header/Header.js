@@ -23,7 +23,7 @@ const Header = () => {
   const [loading, setLoading] = useState(false)
   const [userName, setUserName] = useState('')
   const [userAvatar, setUserAvatar] = useState('')
-  const [, ,count] = useContext(ThemeContext)
+  // const [, ,count] = useContext(ThemeContext)
   const user = useSelector((state) => state.user)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -57,7 +57,7 @@ const Header = () => {
       <p className='inforItem' onClick={() => navigate("/profile") }>Thông tin cá nhân</p>
       {
         user?.isAdmin && (
-          <p className='inforItem' onClick={() => navigate("/system/admin")}>Quản lý hệ thống</p>
+          <p className='inforItem' onClick={() => navigate("/admin")}>Quản lý hệ thống</p>
         )
       }
       <p className='inforItem' onClick={handleLogout}>Đăng xuất</p>
