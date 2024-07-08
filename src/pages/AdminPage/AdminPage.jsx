@@ -57,18 +57,18 @@ export const AdminPage = () => {
   }
   return (
     <div class="bg-white" style={{backgroundColor:"#fff"}}>
-        <Header />
-      <div style={{display:"flex", marginTop: "6%"}}>
-      <div style={{ display: 'flex', height:"100vh",boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px"}}>
-        <Menu
-          mode="inline"
-          style={{
-            width: 256,
-          }}
-          items={items}
-          onClick={handleClickMenu}
-        />
-      </div>
+        <Header  isAdminPage ={true} />
+      <div className='ad_content' style={{ display: "flex" }}>
+        <div style={{ display: 'flex', height: "100vh", boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px" }}>
+          <Menu
+            mode="inline"
+            style={{
+              width: 256,
+            }}
+            items={items}
+            onClick={handleClickMenu}
+          />
+        </div>
         {
           renderChil(keyTab)
         }

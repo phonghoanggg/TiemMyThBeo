@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import './index.css'
 import 'tailwindcss/tailwind.css';
 import { Avatar, Badge, Popover } from 'antd';
@@ -16,14 +16,13 @@ import { useNavigate } from "react-router-dom";
 
 
 
-const Header = () => {
+const Header = ({isAdminPage}) => {
   const [scroll, setScroll] = useState(false)
   const [openModalRegister, setOpenModalRegister] = useState(false)
   const [openModalLogin, setOpenModalLogin] = useState(false)
   const [loading, setLoading] = useState(false)
   const [userName, setUserName] = useState('')
   const [userAvatar, setUserAvatar] = useState('')
-  // const [, ,count] = useContext(ThemeContext)
   const user = useSelector((state) => state.user)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -65,15 +64,23 @@ const Header = () => {
   );
   
   return (
-      <header class={scroll ? 'headerScroll' : 'header' }>
-        <a style={{cursor:"pointer"}} class="logo"  onClick={() => navigate("/") }>MỲ <span className='title_logo'>NGON</span></a>
+      <header class={scroll ? 'headerScroll' : isAdminPage ? "admin_header" : 'header' }>
+        <a style={{cursor:"pointer"}} class="logo"  onClick={() => navigate("/") }>
+          {isAdminPage ? (<Fragment>TRANG <span className='title_logo'>ADMIN</span></Fragment>) : (<Fragment>MỲ <span className='title_logo'>NGON</span></Fragment>)}
+          </a>
         <a style={{marginRight:"10px"}} onClick={() => navigate("/") } class="logo">
         </a>
         <ul class="navbar">
-          <li><a className='navigation' href="#home">Trang chủ</a></li>
-          <li><a className='navigation' href="#about">Giới thiệu</a></li>
-          <li><a className='navigation' href="#menu">Danh sách</a></li>
-          <li><a className='navigation' href="#contact">Liên hệ</a></li>
+          {
+          !isAdminPage && (
+            <Fragment>
+              <li><a className='navigation' href="#home">Trang chủ</a></li>
+              <li><a className='navigation' href="#about">Giới thiệu</a></li>
+              <li><a className='navigation' href="#menu">Danh sách</a></li>
+              <li><a className='navigation' href="#contact">Liên hệ</a></li>
+            </Fragment>
+            )
+          }
           <Loading isLoading={loading} > 
           {
              user?.access_token ? (

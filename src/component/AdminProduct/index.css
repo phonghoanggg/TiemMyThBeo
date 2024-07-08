@@ -7,3 +7,7 @@
     color: black;
     margin-right: 20px;
 }
+.box_upload-img {
+    display: flex;
+    align-items: center;
+}

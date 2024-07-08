@@ -1,0 +1,8 @@
+.ad_content {
+    margin-top: 106px;
+}
+@media(max-width: 1690px) {
+    .ad_content {
+        margin-top: 82px;
+    }
+}

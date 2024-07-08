@@ -1,49 +1,10 @@
-import { Divider, Radio, Table } from 'antd';
+import {Table } from 'antd';
 import React, { useState } from 'react'
-const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-    },
-  ];
-  const data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sydney No. 1 Lake Park',
-    },
-    {
-      key: '4',
-      name: 'Disabled User',
-      age: 99,
-      address: 'Sydney No. 1 Lake Park',
-    },
-  ];
+import { Loading } from '../LoadingComponent/Loading';
+
+  
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
     },
     getCheckboxProps: (record) => ({
       disabled: record.name === 'Disabled User',
@@ -51,19 +12,22 @@ const columns = [
       name: record.name,
     }),
   };
-const TableComponent = () => {
+const TableComponent = (props) => {
     const [selectionType, setSelectionType] = useState('checkbox');
+    const {dataProductList = [],columns = [], isLoading = false} = props
     return (
-      <div>
+      <Loading isLoading={isLoading} >
         <Table
-          rowSelection={{
-            type: selectionType,
-            ...rowSelection,
-          }}
+          // rowSelection={{
+          //   type: selectionType,
+          //   ...rowSelection,
+          // }}
           columns={columns}
-          dataSource={data}
+          dataSource={dataProductList}
+          {...props}
+          // pagination={{ pageSize: 5 }}
         />
-      </div>
+      </Loading>
     )
 }
 

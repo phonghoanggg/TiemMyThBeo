@@ -25,7 +25,26 @@ export const useMuttionHooksUpdateUser = (type) => {
 }
 export const useMuttionHooksCreateProduct = (type) => {
     const mutation = useMutation({
-        mutationFn:data => ProductService.createProduct(data)
+        mutationFn:data => 
+            ProductService.createProduct(data)
+    })
+    return mutation
+}
+export const useMuttionHooksUpdateProduct = (type) => {
+    const mutation = useMutation({
+        mutationFn:(data)=>  {
+            const {id,access_token, ...rests} = data
+            return ProductService.updateProduct(id,rests?.data,access_token)
+        }
+    })
+    return mutation
+}
+export const useMuttionHooksDeletedProduct = (type) => {
+    const mutation = useMutation({
+        mutationFn:(data)=>  {
+            const {id,access_token} = data
+            return ProductService.deleteProduct(id,access_token)
+        }
     })
     return mutation
 }
