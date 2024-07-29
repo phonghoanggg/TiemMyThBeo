@@ -68,9 +68,11 @@ const AdminProduct = () => {
   }
   // get allProduct
   const queryProducts = useQuery({queryKey:['products'],queryFn:getAllProducts})
-  const {isLoading: isLoadingProduct, data: dataProduct} = queryProducts
+  const {data: dataProduct,isFetching} = queryProducts
+
   // Mutation create product
-  const { data, isLoading, isSuccess, isError } = mutation
+  const { data, isSuccess, isError } = mutation
+ 
   // Mutation update product
   const {  isLoading: isLoadingUpdateProduc, isSuccess: isSuccessUpdateProduct, isError: isErrorUpdateProduct, status } = mutationUpdate
   const { data: dataDelected, isLoading: isLoadingUpdateDeleted, isSuccess: isSuccessUpdateDeletedt, isError: isErrorUpdateDeletedt } = mutationDeleted
@@ -372,60 +374,60 @@ const AdminProduct = () => {
   ];
 
   return (
-    <div class="wrapContent">
-      <div className='flex mb-5'>
-        <p class="tilePage">Quản lý sản phẩm</p>
-        <PlusSquareOutlined style={{ fontSize: "24px", cursor: "pointer" }} onClick={showModal} />
+      <div class="wrapContent">
+        <div className='flex mb-5'>
+          <p class="tilePage">Quản lý sản phẩm</p>
+          <PlusSquareOutlined style={{ fontSize: "24px", cursor: "pointer" }} onClick={showModal} />
+        </div>
+        <TableComponent isLoading={isFetching} dataProductList={dataProductList} columns={columns}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: (event) => {
+                setRowSelected(record._id)
+              }, // click row
+              onDoubleClick: (event) => { }, // double click row
+              onContextMenu: (event) => { }, // right button click row
+              onMouseEnter: (event) => { }, // mouse enter row
+              onMouseLeave: (event) => { }, // mouse leave row
+            };
+          }}
+        />
+        <DrawerComponent
+          title='Chi tiết sản phẩm'
+          isOpen={isOpenDrawer}
+          onClose={() => {
+            setAvatar('')
+            setRowSelected('')
+            setOpenDrawer(false)
+          }}>
+          <DrawerProduct
+            form={form}
+            isLoading={isLoadingUpdateProduc || isLoadingUpdate}
+            handleChangeImg={handleChangeImg}
+            onSubmitUpdate={onSubmitUpdate}
+            onFinishFailed={onFinishFailed}
+            avatar={avatar}
+          />
+        </DrawerComponent>
+
+        {/* Modal */}
+        <Modal title="Thêm sản phẩm" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
+          <DrawerProduct
+            typeModal={typeModal}
+            form={formCreate}
+            isLoading={false}
+            handleChangeImg={handleChangeImg}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            avatar={avatar}
+          />
+        </Modal>
+        <Modal title="Xóa sản phẩm" open={isModalOpenDeleted} onOk={handleOkDeleted} onCancel={handleCancelDeleted}>
+          <Loading isLoading={isLoadingUpdateDeleted}>
+            <div>Bạn có chắc muốn xóa sản phẩm này không?</div>
+          </Loading>
+        </Modal>
       </div>
-      <TableComponent isLoading = {isLoadingProduct} dataProductList = {dataProductList} columns={columns} 
-      onRow={(record, rowIndex) => {
-        return {
-          onClick: (event) => {
-            setRowSelected(record._id)
-          }, // click row
-          onDoubleClick: (event) => {}, // double click row
-          onContextMenu: (event) => {}, // right button click row
-          onMouseEnter: (event) => {}, // mouse enter row
-          onMouseLeave: (event) => {}, // mouse leave row
-        };
-      }}
-      />
-      <DrawerComponent
-        title='Chi tiết sản phẩm'
-        isOpen={isOpenDrawer}
-        onClose={() => {
-          setAvatar('')
-          setRowSelected('')
-          setOpenDrawer(false)
-        }}> 
-        <DrawerProduct 
-          form = {form}
-          isLoading = {isLoadingUpdateProduc || isLoadingUpdate}
-          handleChangeImg ={handleChangeImg}
-          onSubmitUpdate = {onSubmitUpdate}
-          onFinishFailed = {onFinishFailed}
-          avatar = {avatar} 
-          />
-      </DrawerComponent>
-      
-      {/* Modal */}
-      <Modal title="Thêm sản phẩm" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} footer={null}>
-        <DrawerProduct 
-          typeModal={typeModal}
-          form = {formCreate} 
-          isLoading= {false}
-          handleChangeImg ={handleChangeImg}
-          onFinish = {onFinish}
-          onFinishFailed = {onFinishFailed}
-          avatar = {avatar} 
-          />
-      </Modal>
-      <Modal title="Xóa sản phẩm" open={isModalOpenDeleted} onOk={handleOkDeleted} onCancel={handleCancelDeleted}>
-        <Loading isLoading={isLoadingUpdateDeleted}>
-          <div>Bạn có chắc muốn xóa sản phẩm này không?</div>
-        </Loading>
-      </Modal>
-    </div>
   )
 }
 

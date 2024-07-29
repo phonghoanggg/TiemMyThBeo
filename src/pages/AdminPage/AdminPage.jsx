@@ -8,7 +8,7 @@ import './index.css'
 
 const items = [
   {
-    key: '2',
+    key: 'manage',
     icon: <AppstoreOutlined />,
     label: 'Quản lý chức năng',
     children: [
@@ -39,9 +39,12 @@ const getLevelKeys = (items1) => {
   return key;
 };
 const levelKeys = getLevelKeys(items);
+
 export const AdminPage = () => {
   const [stateOpenKeys, setStateOpenKeys] = useState(['2', '23']);
-  const [keyTab, setKeyTab] = useState("")
+
+  const [keyTab, setKeyTab] = useState("user")
+
   const handleClickMenu =({key}) => {
     setKeyTab(key)
   }
@@ -66,6 +69,8 @@ export const AdminPage = () => {
               width: 256,
             }}
             items={items}
+            defaultSelectedKeys={['user']}
+            defaultOpenKeys={['manage']}
             onClick={handleClickMenu}
           />
         </div>
