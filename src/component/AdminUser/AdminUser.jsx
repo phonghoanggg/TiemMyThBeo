@@ -5,7 +5,7 @@ import { Button, Drawer, Form, Input, Modal, Upload,TableColumnType, Space } fro
 import { getBase64 } from '../../until'
 import *  as ProductService from '../../services/ProductServices'
 import * as UserService from '../../services/UserServices'
-import { useMuttionHooksCreateUser, useMuttionHooksDeletedProduct, useMuttionHooksDeletedUser, useMuttionHooksUpdateProduct, useMuttionHooksUpdateUser } from '../../hook/useMutationHook';
+import { useMuttionHooksCreateUser, useMuttionHooksDeletedProduct, useMuttionHooksDeletedProductMany, useMuttionHooksDeletedUser, useMuttionHooksDeletedUserMany, useMuttionHooksUpdateProduct, useMuttionHooksUpdateUser } from '../../hook/useMutationHook';
 import { Loading } from '../LoadingComponent/Loading'
 import * as message from "../../component/Message/Message" 
 import { useQuery } from 'react-query'
@@ -46,9 +46,18 @@ const AdminUser = () => {
       UserService.deleteUser(data)
     }
   )
+  const mutationDeletedMany = useMuttionHooksDeletedUserMany()
+
   const getAllUser = async() => {
     const res = await UserService.getAllUser()
     return res
+  }
+  const handleDeleteProducs = (_id) => {
+    mutationDeletedMany.mutate({ids: _id, access_token: user?.access_token},{
+      onSettled: () => {
+        queryUsers.refetch()
+      }
+    })
   }
   // get allProduct
   const queryUsers = useQuery({queryKey:['users'],queryFn:getAllUser})
@@ -365,7 +374,7 @@ const AdminUser = () => {
         <p class="tilePage">Quản lý tài khoản</p>
         <UserAddOutlined style={{ fontSize: "24px", cursor: "pointer" }} onClick={showModal} />
       </div>
-      <TableComponent isLoading = {isFetching} dataProductList = {dataUserList} columns={columns} 
+      <TableComponent handleDeleteProducs = {handleDeleteProducs} isLoading = {isFetching} dataProductList = {dataUserList} columns={columns} 
       onRow={(record, rowIndex) => {
         return {
           onClick: (event) => {

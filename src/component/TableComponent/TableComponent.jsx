@@ -1,10 +1,15 @@
-import {Table } from 'antd';
-import React, { useState } from 'react'
+import {Button, Table } from 'antd';
+import React, { Fragment, useState } from 'react'
 import { Loading } from '../LoadingComponent/Loading';
 
-  
+const TableComponent = (props) => {
+  const { dataProductList = [], columns = [], isLoading = false, handleDeleteProducs } = props
+  const [selectionType, setSelectionType] = useState('checkbox');
+  const [deleteList, setDeleteList] = useState([])
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
+      setDeleteList(selectedRowKeys)
     },
     getCheckboxProps: (record) => ({
       disabled: record.name === 'Disabled User',
@@ -12,23 +17,28 @@ import { Loading } from '../LoadingComponent/Loading';
       name: record.name,
     }),
   };
-const TableComponent = (props) => {
-    const [selectionType, setSelectionType] = useState('checkbox');
-    const {dataProductList = [],columns = [], isLoading = false} = props
-    return (
-      <Loading isLoading={isLoading} >
+  console.log("props",props)
+  const  handleDeleteAll =() => {
+    handleDeleteProducs(deleteList)
+  }
+
+  return (
+    <Loading isLoading={isLoading} >
+      <Fragment>
+        <Button type="primary" onClick={handleDeleteAll} disabled={deleteList.length <= 1}>Xóa tất cả</Button>
         <Table
-          // rowSelection={{
-          //   type: selectionType,
-          //   ...rowSelection,
-          // }}
+          rowSelection={{
+            type: selectionType,
+            ...rowSelection,
+          }}
           columns={columns}
           dataSource={dataProductList}
           {...props}
-          // pagination={{ pageSize: 5 }}
+        // pagination={{ pageSize: 5 }}
         />
-      </Loading>
-    )
+      </Fragment>
+    </Loading>
+  )
 }
 
 export default TableComponent

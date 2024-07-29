@@ -49,6 +49,26 @@ export const useMuttionHooksDeletedProduct = (type) => {
     })
     return mutation
 }
+export const useMuttionHooksDeletedProductMany = (type) => {
+    const mutation = useMutation({
+        mutationFn:(data)=>  {
+            const {ids,access_token} = data
+            console.log("22222",data)
+            return ProductService.deleteManyProduct(ids,access_token)
+        }
+    })
+    return mutation
+}
+export const useMuttionHooksDeletedUserMany = (type) => {
+    const mutation = useMutation({
+        mutationFn:(data)=>  {
+            const {ids,access_token} = data
+            console.log("22222",data)
+            return UserService.deleteManyUser(ids,access_token)
+        }
+    })
+    return mutation
+}
 export const useMuttionHooksDeletedUser = (type) => {
     const mutation = useMutation({
         mutationFn:(data)=>  {

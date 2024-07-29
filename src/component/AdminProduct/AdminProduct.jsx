@@ -4,7 +4,7 @@ import TableComponent from '../TableComponent/TableComponent'
 import { Button, Drawer, Form, Input, Modal, Upload,TableColumnType, Space } from 'antd'
 import { getBase64 } from '../../until'
 import *  as ProductService from '../../services/ProductServices'
-import { useMuttionHooksCreateProduct, useMuttionHooksDeletedProduct, useMuttionHooksUpdateProduct } from '../../hook/useMutationHook';
+import { useMuttionHooksCreateProduct, useMuttionHooksDeletedProduct, useMuttionHooksDeletedProductMany, useMuttionHooksUpdateProduct } from '../../hook/useMutationHook';
 import { Loading } from '../LoadingComponent/Loading'
 import * as message from "../../component/Message/Message" 
 import { useQuery } from 'react-query'
@@ -57,14 +57,19 @@ const AdminProduct = () => {
       ProductService.updateProduct(data)
     }
   )
-  const mutationDeleted = useMuttionHooksDeletedProduct(
-    (data) => {
-      ProductService.updateProduct(data)
-    }
-  )
+  const mutationDeleted = useMuttionHooksDeletedProduct()
+  const mutationDeletedMany = useMuttionHooksDeletedProductMany()
+
   const getAllProducts = async() => {
     const res = await ProductService.getAllProduct()
     return res
+  }
+  const handleDeleteProducs = (_id) => {
+    mutationDeletedMany.mutate({ids: _id, access_token: user?.access_token},{
+      onSettled: () => {
+        queryProducts.refetch()
+      }
+    })
   }
   // get allProduct
   const queryProducts = useQuery({queryKey:['products'],queryFn:getAllProducts})
@@ -379,7 +384,7 @@ const AdminProduct = () => {
           <p class="tilePage">Quản lý sản phẩm</p>
           <PlusSquareOutlined style={{ fontSize: "24px", cursor: "pointer" }} onClick={showModal} />
         </div>
-        <TableComponent isLoading={isFetching} dataProductList={dataProductList} columns={columns}
+        <TableComponent handleDeleteProducs = {handleDeleteProducs} isLoading={isFetching} dataProductList={dataProductList} columns={columns}
           onRow={(record, rowIndex) => {
             return {
               onClick: (event) => {
