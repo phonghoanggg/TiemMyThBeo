@@ -5,7 +5,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import './index.css'
 const DrawerProduct = (props) => {
     const { isLoading, avatar,form, typeModal,handleChangeImg, onSubmitUpdate, onFinishFailed,onFinish } = props
-    console.log("isLoading",isLoading)
+    console.log("avatar",avatar)
     return (
         <div>
             <Loading isLoading={isLoading} >

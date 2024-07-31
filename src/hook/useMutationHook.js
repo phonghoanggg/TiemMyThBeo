@@ -18,7 +18,18 @@ export const useMuttionHooksUpdateUser = (type) => {
     const mutation = useMutation({
         mutationFn:(data)=> {
             const {id,access_token, ...rests} = data
-            return UserService.updateUser(id,rests,access_token)
+            console.log("resssss", rests)
+            return UserService.updateUser(id,data,access_token)
+        }
+    })
+    return mutation
+}
+export const useMuttionHooksUpdateUserAdmin = (type) => {
+    const mutation = useMutation({
+        mutationFn:(data)=> {
+            const {id,access_token, ...rests} = data
+            console.log("resssss", rests)
+            return UserService.updateUser(id,rests?.data,access_token)
         }
     })
     return mutation

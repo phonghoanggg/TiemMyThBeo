@@ -26,37 +26,11 @@ const AdminProduct = () => {
   // Filter ant 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
+  const [openModal, setOpenModal] = useState(false)
   const searchInput = useRef(null);
   
-
-  const mutation = useMuttionHooksCreateProduct(
-    (data) =>  {  
-      const {
-        name,
-        image,
-        type,
-        price,
-        rating,
-        description,
-        countInStock: countInStock,
-      } = data
-      console.log("name",name)
-      ProductService.createProduct({
-        name,
-        image,
-        type,
-        price,
-        rating,
-        description,
-        countInStock, 
-      })
-    }
-  )
-  const mutationUpdate = useMuttionHooksUpdateProduct(
-    (data) => {
-      ProductService.updateProduct(data)
-    }
-  )
+  const mutation = useMuttionHooksCreateProduct()
+  const mutationUpdate = useMuttionHooksUpdateProduct()
   const mutationDeleted = useMuttionHooksDeletedProduct()
   const mutationDeletedMany = useMuttionHooksDeletedProductMany()
 
@@ -81,14 +55,15 @@ const AdminProduct = () => {
   // Mutation update product
   const {  isLoading: isLoadingUpdateProduc, isSuccess: isSuccessUpdateProduct, isError: isErrorUpdateProduct, status } = mutationUpdate
   const { data: dataDelected, isLoading: isLoadingUpdateDeleted, isSuccess: isSuccessUpdateDeletedt, isError: isErrorUpdateDeletedt } = mutationDeleted
+  const { data: dataDelecteMany, isLoading: isLoadingUpdateDeleteMany, isSuccess: isSuccessUpdateDeleteMany, isError: isErrorUpdateDeleteMany } = mutationDeletedMany
 
-  console.log("dataDelected",dataDelected)
+  console.log("dataDelected",dataDelecteMany)
   // UPDATE product
   useEffect(() => {
     if(isSuccessUpdateProduct && status === "success"  ) {
       message.success("Cập nhật sản phẩm thành công")
       setRowSelected('')
-      setAvatar('')
+      setAvatar(null)
       setTimeout(() => {
         setOpenDrawer(false)
       },[700])
@@ -115,12 +90,24 @@ const AdminProduct = () => {
    // DELETED product
    useEffect(() => {
     if(isSuccessUpdateDeletedt && dataDelected?.status === "OK") {
-      message.success("Đã xóa")
-      setIsModalOpenDeleted(false);  
+      message.success("Đã xóa")  
+      setIsModalOpenDeleted(false)
     } else if(isErrorUpdateDeletedt) {
       message.error("Xóa thất bại")
     }
   },[isSuccessUpdateDeletedt,isErrorUpdateDeletedt])
+
+     // DELETED product many
+     useEffect(() => {
+      if(isSuccessUpdateDeleteMany) {
+        message.success("Đã xóa")
+        setTimeout(() => {
+          setOpenModal(false)
+        },[700])
+      } else if(isErrorUpdateDeleteMany) {
+        message.error("Xóa thất bại")
+      }
+    },[isSuccessUpdateDeleteMany,isErrorUpdateDeleteMany])
 
   // Open form
   const showModal = () => {
@@ -150,9 +137,10 @@ const AdminProduct = () => {
 
   // handle ADD product
   const onFinish = (values) => {
-    if (values.image && values.image.file) {
-      values.image = values.image.file.preview
+    if (values.image) {
+      values.image = avatar
     }
+    console.log("values",values)
     // payload value 
     mutation.mutate(values, {
       onSettled: () => {
@@ -167,6 +155,7 @@ const AdminProduct = () => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
+    console.log("fileList",fileList)
     setAvatar(file.preview)
   }
   const onFinishFailed = (errorInfo) => {
@@ -379,24 +368,31 @@ const AdminProduct = () => {
   ];
 
   return (
-      <div class="wrapContent">
-        <div className='flex mb-5'>
-          <p class="tilePage">Quản lý sản phẩm</p>
-          <PlusSquareOutlined style={{ fontSize: "24px", cursor: "pointer" }} onClick={showModal} />
-        </div>
-        <TableComponent handleDeleteProducs = {handleDeleteProducs} isLoading={isFetching} dataProductList={dataProductList} columns={columns}
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (event) => {
-                setRowSelected(record._id)
-              }, // click row
-              onDoubleClick: (event) => { }, // double click row
-              onContextMenu: (event) => { }, // right button click row
-              onMouseEnter: (event) => { }, // mouse enter row
-              onMouseLeave: (event) => { }, // mouse leave row
-            };
-          }}
-        />
+    <div class="wrapContent">
+      <div className='flex mb-5'>
+        <p class="tilePage">Quản lý sản phẩm</p>
+        <PlusSquareOutlined style={{ fontSize: "24px", cursor: "pointer" }} onClick={showModal} />
+      </div>
+      <TableComponent
+        columns={columns}
+        dataProductList={dataProductList}
+        handleDeleteProducs={handleDeleteProducs}
+        isLoading={isFetching}
+        setOpenModal={setOpenModal}
+        openModal={openModal}
+        statusDelete={isSuccessUpdateDeleteMany && dataDelecteMany?.status === "OK"}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              setRowSelected(record._id)
+            }, // click row
+            onDoubleClick: (event) => { }, // double click row
+            onContextMenu: (event) => { }, // right button click row
+            onMouseEnter: (event) => { }, // mouse enter row
+            onMouseLeave: (event) => { }, // mouse leave row
+          };
+        }}
+      />
         <DrawerComponent
           title='Chi tiết sản phẩm'
           isOpen={isOpenDrawer}

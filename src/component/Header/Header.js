@@ -24,6 +24,7 @@ const Header = ({isAdminPage}) => {
   const [userName, setUserName] = useState('')
   const [userAvatar, setUserAvatar] = useState('')
   const user = useSelector((state) => state.user)
+  console.log("1111111", user)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   useEffect(() =>{

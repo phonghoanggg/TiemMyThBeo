@@ -5,7 +5,7 @@ import { Button, Drawer, Form, Input, Modal, Upload,TableColumnType, Space } fro
 import { getBase64 } from '../../until'
 import *  as ProductService from '../../services/ProductServices'
 import * as UserService from '../../services/UserServices'
-import { useMuttionHooksCreateUser, useMuttionHooksDeletedProduct, useMuttionHooksDeletedProductMany, useMuttionHooksDeletedUser, useMuttionHooksDeletedUserMany, useMuttionHooksUpdateProduct, useMuttionHooksUpdateUser } from '../../hook/useMutationHook';
+import { useMuttionHooksCreateUser, useMuttionHooksDeletedProduct, useMuttionHooksDeletedProductMany, useMuttionHooksDeletedUser, useMuttionHooksDeletedUserMany, useMuttionHooksUpdateProduct, useMuttionHooksUpdateUser, useMuttionHooksUpdateUserAdmin } from '../../hook/useMutationHook';
 import { Loading } from '../LoadingComponent/Loading'
 import * as message from "../../component/Message/Message" 
 import { useQuery } from 'react-query'
@@ -28,24 +28,13 @@ const AdminUser = () => {
   // Filter ant 
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
+  const [openModal, setOpenModal] = useState(false)
   const searchInput = useRef(null);
   
 
-  const mutation = useMuttionHooksCreateUser(
-    (data) =>  {  
-      UserService.createUser(data)
-    }
-  )
-  const mutationUpdate = useMuttionHooksUpdateUser(
-    (data) => {
-      UserService.updateUser(data)
-    }
-  )
-  const mutationDeleted = useMuttionHooksDeletedUser(
-    (data) => {
-      UserService.deleteUser(data)
-    }
-  )
+  const mutation = useMuttionHooksCreateUser()
+  const mutationUpdate = useMuttionHooksUpdateUserAdmin()
+  const mutationDeleted = useMuttionHooksDeletedUser()
   const mutationDeletedMany = useMuttionHooksDeletedUserMany()
 
   const getAllUser = async() => {
@@ -69,13 +58,14 @@ const AdminUser = () => {
 
   const { data: dataDelected, isLoading: isLoadingUpdateDeleted, isSuccess: isSuccessUpdateDeletedt, isError: isErrorUpdateDeletedt } = mutationDeleted
 
-  console.log("dataDelected",isLoadingUpdateUser)
+  const { data: dataDelectedMany, isLoading: isLoadingUpdateDeleteMany, isSuccess: isSuccessUpdateDeleteMany, isError: isErrorUpdateDeleteMany } = mutationDeletedMany
+
   // UPDATE product
   useEffect(() => {
     if(isSuccessUpdateProduct && status === "success"  ) {
       message.success("Cập nhật tài khoản thành công")
       setRowSelected('')
-      setAvatar('')
+      setAvatar(null)
       setTimeout(() => {
         setOpenDrawer(false)
       },[700])
@@ -109,6 +99,18 @@ const AdminUser = () => {
     }
   },[isSuccessUpdateDeletedt,isErrorUpdateDeletedt])
 
+   // DELETED product many
+  useEffect(() => {
+    if(isSuccessUpdateDeleteMany && dataDelectedMany?.status === "OK") {
+      message.success("Đã xóa") 
+      setTimeout(() => {
+        setOpenModal(false)
+      },[700])
+    } else if(isErrorUpdateDeleteMany) {
+      message.error("Xóa thất bại")
+    }
+  },[isSuccessUpdateDeleteMany,isErrorUpdateDeleteMany])
+
   // Open form
   const showModal = () => {
     setIsModalOpen(true);
@@ -137,10 +139,9 @@ const AdminUser = () => {
 
   // handle ADD product
   const onFinish = (values) => {
-    if (values.image && values.image.file) {
-      values.image = values.image.file.preview
+    if (values.image) {
+      values.image = avatar
     }
-    console.log("valueeee", values)
     // payload value 
     mutation.mutate(values, {
       onSettled: () => {
@@ -164,14 +165,15 @@ const AdminUser = () => {
   // GET data for item product
   const fetchDataProductItem = async(rowSelected) => {
     const res = await UserService.getDetailsUser(rowSelected)
-    console.log("2222",res)
     const data = {
       name: res?.data?.name,
       email: res?.data?.email,
       isAdmin: res?.data?.isAdmin,
       phone: res?.data?.phone,
       address: res?.data?.address,
+      image: res?.data?.image
     }
+    console.log("dataaa",res)
     form.setFieldsValue(data)
     setAvatar(data.image)
     setLoadingUpdate(false)
@@ -184,13 +186,13 @@ const AdminUser = () => {
 
   // PUT data for update product
   const fetchUpdateUser = async(values) => {
-    console.log("kekeke", values)
     const data = {
       name: values?.name,
       email: values?.email,
       isAdmin: values?.isAdmin,
       phone: values?.phone,
       address: values?.address,
+      image: avatar
     }
     await mutationUpdate.mutate({id: rowSelected, access_token: user?.access_token, data}, {
       onSettled: () => {
@@ -374,18 +376,24 @@ const AdminUser = () => {
         <p class="tilePage">Quản lý tài khoản</p>
         <UserAddOutlined style={{ fontSize: "24px", cursor: "pointer" }} onClick={showModal} />
       </div>
-      <TableComponent handleDeleteProducs = {handleDeleteProducs} isLoading = {isFetching} dataProductList = {dataUserList} columns={columns} 
-      onRow={(record, rowIndex) => {
-        return {
-          onClick: (event) => {
-            setRowSelected(record._id)
-          }, // click row
-          onDoubleClick: (event) => {}, // double click row
-          onContextMenu: (event) => {}, // right button click row
-          onMouseEnter: (event) => {}, // mouse enter row
-          onMouseLeave: (event) => {}, // mouse leave row
-        };
-      }}
+      <TableComponent
+        columns={columns}
+        dataProductList={dataUserList}
+        isLoading={isFetching}
+        handleDeleteProducs={handleDeleteProducs}
+        setOpenModal={setOpenModal}
+        openModal={openModal}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: (event) => {
+              setRowSelected(record._id)
+            }, // click row
+            onDoubleClick: (event) => { }, // double click row
+            onContextMenu: (event) => { }, // right button click row
+            onMouseEnter: (event) => { }, // mouse enter row
+            onMouseLeave: (event) => { }, // mouse leave row
+          };
+        }}
       />
       <DrawerComponent
         title='Chi tiết tài khoản'

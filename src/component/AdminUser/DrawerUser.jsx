@@ -4,9 +4,8 @@ import { Button, Checkbox, Form, Input, Radio, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons';
 import './index.css'
 const DrawerUser = (props) => {
-    const { isLoading,form, typeModal,handleChangeImg, onSubmitUpdate, onFinishFailed,onFinish } = props
-    console.log("typeModal",typeModal === "ADD_USER" ? onFinish : onSubmitUpdate)
-
+    const { isLoading,form, typeModal,handleChangeImg, onSubmitUpdate, onFinishFailed,onFinish,avatar } = props
+    console.log("avatar111",avatar)
     return (
         <div>
             <Loading isLoading={isLoading} >
@@ -100,6 +99,23 @@ const DrawerUser = (props) => {
                         ]}
                     >
                         <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Ảnh tài khoản"
+                        name="image"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your image!',
+                            },
+                        ]}
+                    >
+                        <div class="box_upload-img">
+                        <Upload onChange={handleChangeImg} maxCount={1} >
+                            <Button icon={<UploadOutlined />}>Tải ảnh</Button>
+                        </Upload>
+                        {avatar && (<img src={avatar} style={{ height: "50px", width: "50px", borderRadius: "99px", objectFit: "cover", marginLeft: "20px" }} alt='avatar' />)}
+                        </div>
                     </Form.Item>
                     <Form.Item
                         wrapperCol={{
