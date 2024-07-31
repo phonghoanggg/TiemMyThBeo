@@ -1,7 +1,8 @@
 import {Button, Modal, Table } from 'antd';
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useMemo, useState } from 'react'
 import { Loading } from '../LoadingComponent/Loading';
-
+import { Excel } from "antd-table-saveas-excel";
+import './index.css'
 const TableComponent = (props) => {
   const { dataProductList = [], columns = [], isLoading = false, handleDeleteProducs, statusDelete = false,openModal,setOpenModal} = props
   const [selectionType, setSelectionType] = useState('checkbox');
@@ -16,18 +17,35 @@ const TableComponent = (props) => {
       name: record.name,
     }),
   };
-  console.log("statusDelete1111",statusDelete,openModal)
+  const columnExport = useMemo(() => {
+    return columns.filter((col) => col.dataIndex !== "action")
+  },[columns])
+  console.log("collll", columnExport)
+
   const  handleDeleteAll =() => {
     setOpenModal(true)
   }
   const handleSubmitDeleteAll = () => {
     handleDeleteProducs(deleteList)
   }
-
+  // handle export file excel
+  const handleExportExcel= () => {
+    const excel = new Excel();
+    excel
+      .addSheet("test")
+      .addColumns(columnExport)
+      .addDataSource(dataProductList, {
+        str2Percent: true
+      })
+      .saveAs("Excel.xlsx");
+  };
   return (
     <Loading isLoading={isLoading} >
       <Fragment>
-        <Button type="primary" style={{marginBottom:"20px"}} onClick={handleDeleteAll} disabled={deleteList.length <= 1}>Xóa tất cả</Button>
+        <div className="btn_header">
+          <Button type="primary" style={{ marginBottom: "20px" }} onClick={handleDeleteAll} disabled={deleteList.length <= 1}>Xóa tất cả</Button>
+          <Button type="primary" style={{ marginBottom: "20px" }} onClick={handleExportExcel}>Export excel</Button>
+        </div>
         <Table
           rowSelection={{
             type: selectionType,
