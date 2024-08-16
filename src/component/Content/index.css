@@ -3,7 +3,10 @@
     justify-content: center;
 }
 .img_pasta-best {
-    width: 80% !important;
+    min-height: 240px;
+    height: 240px;
+    max-height: 240px;
+    object-fit: cover;
 }
 .wrapRate {
     display: flex;

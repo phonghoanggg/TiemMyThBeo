@@ -151,6 +151,7 @@ const AdminProduct = () => {
   
   // handle change avatar
   const handleChangeImg = async ({ fileList }) => {
+    console.log("kekekek111",fileList)
     const file = fileList[0]
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);

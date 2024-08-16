@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { Fragment, useContext, useEffect, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
 import './index.css'
 import 'tailwindcss/tailwind.css';
-import { Avatar, Badge, Popover } from 'antd';
+import { Avatar, Badge, Popover, Select } from 'antd';
 import ThemeContext from '../../hook/CountProvider';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import Registrantion from '../Registration/Registrantion'
@@ -13,8 +13,9 @@ import *  as UserService from '../../services/UserServices'
 import { resetUser } from '../../redux/slides/userSlide';
 import { Loading } from '../LoadingComponent/Loading';
 import { useNavigate } from "react-router-dom";
-
-
+import qs from 'qs';
+import axios from 'axios';
+import { useDebounce } from "use-debounce";
 
 const Header = ({isAdminPage}) => {
   const [scroll, setScroll] = useState(false)
@@ -52,6 +53,41 @@ const Header = ({isAdminPage}) => {
     setLoading(false)
   },[user?.name, user?.avatar])
 
+  // logic API filter
+  const [products, setProducts] = useState([]);
+  const [value, setValue] = useState();
+  const typingTimoutRef = useRef(null)
+  const handleSearch = (valueChange) => {
+
+    const newValue = valueChange
+    if(typingTimoutRef.current) {
+      clearTimeout(typingTimoutRef.current)
+    }
+    typingTimoutRef.current = setTimeout(() => {
+      setValue(newValue);
+    },300)
+  };
+  const handleChange =(newValue) => {
+    setValue(newValue);
+  }
+  const fetchAPIGet = async(value) => {
+    const query = qs.stringify({
+      filter: ['name', value], // Đặt 'name' và giá trị của 'value' vào mảng
+    }, { arrayFormat: 'repeat' }); // Đảm bảo định dạng array thành các query params riêng lẻ
+    
+    try {
+      const response = await axios.get(`http://localhost:3000/api/product/get-all?${query}`);
+      console.log("response",response.data.data)
+      setProducts(response.data.data); 
+    } catch (error) {
+      console.error('Lỗi khi gọi API:', error);
+    }
+  }
+  useEffect(() => {
+    fetchAPIGet(value)
+  },[value])
+
+
   const content = (
     <div>
       <p className='inforItem' onClick={() => navigate("/profile") }>Thông tin cá nhân</p>
@@ -65,14 +101,30 @@ const Header = ({isAdminPage}) => {
   );
   
   return (
-      <header class={scroll ? 'headerScroll' : isAdminPage ? "admin_header" : 'header' }>
-        <a style={{cursor:"pointer"}} class="logo"  onClick={() => navigate("/") }>
-          {isAdminPage ? (<Fragment>TRANG <span className='title_logo'>ADMIN</span></Fragment>) : (<Fragment>MỲ <span className='title_logo'>NGON</span></Fragment>)}
-          </a>
-        <a style={{marginRight:"10px"}} onClick={() => navigate("/") } class="logo">
-        </a>
-        <ul class="navbar">
-          {
+    <header class={scroll ? 'headerScroll' : isAdminPage ? "admin_header" : 'header'}>
+      <a style={{ cursor: "pointer" }} class="logo" onClick={() => navigate("/")}>
+        {isAdminPage ? (<Fragment>TRANG <span className='title_logo'>ADMIN</span></Fragment>) : (<Fragment>MỲ <span className='title_logo'>NGON</span></Fragment>)}
+      </a>
+      <a style={{ marginRight: "10px" }} onClick={() => navigate("/")} class="logo">
+      </a>
+      <Select
+      showSearch
+      value={value}
+      placeholder={"Nhập tên sản phẩm"}
+      style={{width:300}}
+      defaultActiveFirstOption={false}
+      suffixIcon={null}
+      filterOption={false}
+      onSearch={handleSearch}
+      onChange={handleChange}
+      notFoundContent={null}
+      options={(products || []).map((d) => ({
+        value: d.name,
+        label: d.name,
+      }))}
+    />
+      <ul class="navbar">
+        {
           !isAdminPage && (
             <Fragment>
               <li><a className='navigation' href="#home">Trang chủ</a></li>
@@ -80,28 +132,28 @@ const Header = ({isAdminPage}) => {
               <li><a className='navigation' href="#menu">Danh sách</a></li>
               <li><a className='navigation' href="#contact">Liên hệ</a></li>
             </Fragment>
-            )
-          }
-          <Loading isLoading={loading} > 
+          )
+        }
+        <Loading isLoading={loading} >
           {
-             user?.access_token ? (
-            <li>
-              <Popover className='popverItem' content={content} trigger="hover">
-                <span style={{display:"flex", alignItems:"center"}}> {userAvatar ? (<img style={{height:"30px", width:"30px", borderRadius:"99px", objectFit:"cover", marginRight:"5px"}} src={userAvatar} alt='avatar'/>) : (<UserOutlined style={{fontSize:"20px",marginRight:"5px"}} />)}  </span>
-                <span style={{cursor:'pointer', fontFamily:"Madimi One, sans-serif", fontSize:"20px"}}>{userName?.length ? userName : user?.email}</span>
-              </Popover>
-            </li>) : (<li><a className='register' onClick={() => setOpenModalRegister(true)}>Đăng ký</a>/<a className='login' onClick={() => setOpenModalLogin(true)}>Đăng nhập</a></li>)
+            user?.access_token ? (
+              <li>
+                <Popover className='popverItem' content={content} trigger="hover">
+                  <span style={{ display: "flex", alignItems: "center" }}> {userAvatar ? (<img style={{ height: "30px", width: "30px", borderRadius: "99px", objectFit: "cover", marginRight: "5px" }} src={userAvatar} alt='avatar' />) : (<UserOutlined style={{ fontSize: "20px", marginRight: "5px" }} />)}  </span>
+                  <span style={{ cursor: 'pointer', fontFamily: "Madimi One, sans-serif", fontSize: "20px" }}>{userName?.length ? userName : user?.email}</span>
+                </Popover>
+              </li>) : (<li><a className='register' onClick={() => setOpenModalRegister(true)}>Đăng ký</a>/<a className='login' onClick={() => setOpenModalLogin(true)}>Đăng nhập</a></li>)
           }
-          </Loading>
+        </Loading>
 
-          {/* giỏ hàng */}
-          {/* <Badge count={count} style={{backgroundColor:"#FF9100", color:"white !important"}}>
+        {/* giỏ hàng */}
+        {/* <Badge count={count} style={{backgroundColor:"#FF9100", color:"white !important"}}>
           <ShoppingCartOutlined style={{fontSize:30}} />
           </Badge> */}
-        </ul>
-        {openModalRegister && <Registrantion {...{openModalRegister,setOpenModalRegister}}/> }
-        {openModalLogin && <Login {...{openModalLogin,setOpenModalLogin}}/> }
-      </header>
+      </ul>
+      {openModalRegister && <Registrantion {...{ openModalRegister, setOpenModalRegister }} />}
+      {openModalLogin && <Login {...{ openModalLogin, setOpenModalLogin }} />}
+    </header>
   )
 }
 

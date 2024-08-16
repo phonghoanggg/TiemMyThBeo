@@ -46,7 +46,7 @@ const ProfilePage = () => {
   const [checkLoading, setCheckLoading] = useState(false)
   const [emailError, setEmailError] = useState(null)
   const [phoneError, setPhoneError] = useState(false)
-
+  console.log("2222",avatar)
   const navigate = useNavigate()
   const mutation = useMuttionHooksUpdateUser(
     (data) => UserService.updateUser(data)
@@ -190,6 +190,9 @@ const ProfilePage = () => {
             <Upload onChange={handleChangeImg} maxCount={1} >
               <Button icon={<UploadOutlined />}>Tải ảnh</Button>
             </Upload>
+            {
+              
+            }
             {avatar && (<img src={avatar} style={{height:"50px", width:"50px", borderRadius:"99px", objectFit:"cover", marginLeft:"20px"}} alt='avatar' /> )}
           </div>
       </Form.Item>
