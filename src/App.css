@@ -206,7 +206,7 @@ header.sticky{
 }
 .menu-content{
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, auto));
+	grid-template-columns: repeat(4,1fr);
 	gap: 4rem;
 	align-items: center;
 	margin-top: 4rem;
@@ -415,11 +415,13 @@ header.sticky{
 	.about-text h2,.about-text p {
 		margin-bottom: 20px;
 	}
-
+	.menu-content {
+		grid-template-columns: repeat(1,1fr);
+	}
 	
 }
 @media (max-height: 680px){
 	.container{
 		margin-top: 150px;
-	}
+	}	
 }

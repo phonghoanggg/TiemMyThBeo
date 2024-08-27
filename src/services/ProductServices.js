@@ -2,9 +2,14 @@ import axios from "axios";
 
 export const axiosJWT = axios.create() 
 
-export const getAllProduct = async() => {
-    const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/get-all`)
-    return res.data
+export const getAllProduct = async(query) => {
+    if (query) {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/get-all?${query}`)
+        return res.data
+    } else {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/product/get-all`)
+        return res.data
+    }
 }
 export const createProduct= async(data) => {
     const res = await axios.post(`${process.env.REACT_APP_API_URL}/product/create`,data)

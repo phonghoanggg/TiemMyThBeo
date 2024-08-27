@@ -1,18 +1,33 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './index.css'
 import SlideHeader from '../SlideHeader/SlideHeader';
 import * as ProductServices from '../../services/ProductServices'
 import { useQuery } from 'react-query'
 import { ProductCard } from './ProductCard/ProductCard';
+import ThemeContext from '../../hook/CountProvider';
+import qs from 'qs';
+import { Loading } from '../LoadingComponent/Loading';
 
 const Content = () => {
+  const {resultSearch} = useContext(ThemeContext)
+  const [products, setProducts] = useState(null)
+  const [isLoading, setIsLoading]  =  useState(false)
 
-  const fetchProductAll = async () => {
-    const res = await ProductServices.getAllProduct()
-    return res
+  const fetchProductAll = async (resultSearch) => {
+    setIsLoading(true)
+    const query = (resultSearch && resultSearch  !== "all")  ? qs.stringify({
+      filter: ['name', resultSearch],
+    }, { arrayFormat: 'repeat' }) : "";
+    const res = await ProductServices.getAllProduct(query)
+    console.log("ressss",res)
+    setProducts(res)
+    setIsLoading(false)
   }
-  const {isLoading, data:products } = useQuery(['products'], fetchProductAll, {retry: 3 , retryDelay: 1000})
+  useEffect(() => {
+    fetchProductAll(resultSearch)
+  },[resultSearch])
+  console.log("isLoading",isLoading,resultSearch)
   return (
     <div>
         <SlideHeader/>
@@ -80,16 +95,16 @@ const Content = () => {
           <h2>Menu mỳ ý</h2>
           <p>Khám phá hương vị Ý tinh tế với mỳ pasta và sốt đậm đà </p>
         </div>
-
+        <Loading isLoading={isLoading}>
         <div class="menu-content">
           {
-            products?.data.map((item, index) => {
+            products && products?.data.map((item, index) => {
               console.log("item_ketID", item._id)
               return  <ProductCard dataProduct={item} key={item._id} />
             }) 
           }
-
         </div>
+        </Loading>
 
       </section>
     </div>

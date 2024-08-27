@@ -14,8 +14,8 @@ import { resetUser } from '../../redux/slides/userSlide';
 import { Loading } from '../LoadingComponent/Loading';
 import { useNavigate } from "react-router-dom";
 import qs from 'qs';
-import axios from 'axios';
-import { useDebounce } from "use-debounce";
+import *  as ProductService from '../../services/ProductServices'
+
 
 const Header = ({isAdminPage}) => {
   const [scroll, setScroll] = useState(false)
@@ -25,9 +25,45 @@ const Header = ({isAdminPage}) => {
   const [userName, setUserName] = useState('')
   const [userAvatar, setUserAvatar] = useState('')
   const user = useSelector((state) => state.user)
-  console.log("1111111", user)
+  const {valueSearch,setValueSearch,resultSearch,setResultSearch} = useContext(ThemeContext)
+  
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  // logic API filter
+  const [products, setProducts] = useState([]);
+  const typingTimoutRef = useRef(null)
+  const handleSearch = (valueChange) => {
+    const newValue = valueChange
+    if(typingTimoutRef.current) {
+      clearTimeout(typingTimoutRef.current)
+    }
+    typingTimoutRef.current = setTimeout(() => {
+      setValueSearch(newValue);
+    },300)
+  };
+  const handleChange =(newValue) => {
+    setResultSearch(newValue);
+  }
+  const fetchAPIGet = async(value) => {
+    const query = qs.stringify({
+      filter: ['name', value], // Đặt 'name' và giá trị của 'value' vào mảng
+    }, { arrayFormat: 'repeat' }); // Đảm bảo định dạng array thành các query params riêng lẻ
+    
+    try {
+      const response = await ProductService.getAllProduct(query)
+      setProducts(response.data); 
+    } catch (error) {
+      console.error('Lỗi khi gọi API:', error);
+    }
+  }
+  useEffect(() => {
+    fetchAPIGet(valueSearch)
+  },[valueSearch])
+
+
+
+
   useEffect(() =>{
     const hanldeScroll = () => {
       const isScroll = window.scrollY > 100
@@ -53,40 +89,6 @@ const Header = ({isAdminPage}) => {
     setLoading(false)
   },[user?.name, user?.avatar])
 
-  // logic API filter
-  const [products, setProducts] = useState([]);
-  const [value, setValue] = useState();
-  const typingTimoutRef = useRef(null)
-  const handleSearch = (valueChange) => {
-
-    const newValue = valueChange
-    if(typingTimoutRef.current) {
-      clearTimeout(typingTimoutRef.current)
-    }
-    typingTimoutRef.current = setTimeout(() => {
-      setValue(newValue);
-    },300)
-  };
-  const handleChange =(newValue) => {
-    setValue(newValue);
-  }
-  const fetchAPIGet = async(value) => {
-    const query = qs.stringify({
-      filter: ['name', value], // Đặt 'name' và giá trị của 'value' vào mảng
-    }, { arrayFormat: 'repeat' }); // Đảm bảo định dạng array thành các query params riêng lẻ
-    
-    try {
-      const response = await axios.get(`http://localhost:3000/api/product/get-all?${query}`);
-      console.log("response",response.data.data)
-      setProducts(response.data.data); 
-    } catch (error) {
-      console.error('Lỗi khi gọi API:', error);
-    }
-  }
-  useEffect(() => {
-    fetchAPIGet(value)
-  },[value])
-
 
   const content = (
     <div>
@@ -102,27 +104,36 @@ const Header = ({isAdminPage}) => {
   
   return (
     <header class={scroll ? 'headerScroll' : isAdminPage ? "admin_header" : 'header'}>
-      <a style={{ cursor: "pointer" }} class="logo" onClick={() => navigate("/")}>
-        {isAdminPage ? (<Fragment>TRANG <span className='title_logo'>ADMIN</span></Fragment>) : (<Fragment>MỲ <span className='title_logo'>NGON</span></Fragment>)}
-      </a>
-      <a style={{ marginRight: "10px" }} onClick={() => navigate("/")} class="logo">
-      </a>
-      <Select
-      showSearch
-      value={value}
-      placeholder={"Nhập tên sản phẩm"}
-      style={{width:300}}
-      defaultActiveFirstOption={false}
-      suffixIcon={null}
-      filterOption={false}
-      onSearch={handleSearch}
-      onChange={handleChange}
-      notFoundContent={null}
-      options={(products || []).map((d) => ({
-        value: d.name,
-        label: d.name,
-      }))}
-    />
+      <div className='wrap_header'>
+        <div>
+          <a style={{ cursor: "pointer" }} class="logo" onClick={() => navigate("/")}>
+            {isAdminPage ? (<Fragment>TRANG <span className='title_logo'>ADMIN</span></Fragment>) : (<Fragment>MỲ <span className='title_logo'>NGON</span></Fragment>)}
+          </a>
+          <a style={{ marginRight: "10px" }} onClick={() => navigate("/")} class="logo">
+          </a>
+        </div>
+          {
+            !isAdminPage && <Select
+            showSearch
+            value={resultSearch}
+            placeholder={"Nhập tên sản phẩm"}
+            style={{ width: 300 }}
+            defaultActiveFirstOption={false}
+            suffixIcon={null}
+            filterOption={false}
+            onSearch={handleSearch}
+            onChange={handleChange}
+            notFoundContent={null}
+            options={[
+              ...(resultSearch ? [{ value: 'all', label: 'Tất cả' }] : []),
+              ...(products || []).map((d) => ({
+                value: d.name,
+                label: d.name,
+              })),
+            ]}
+            allowClear
+          />
+          }
       <ul class="navbar">
         {
           !isAdminPage && (
@@ -153,6 +164,7 @@ const Header = ({isAdminPage}) => {
       </ul>
       {openModalRegister && <Registrantion {...{ openModalRegister, setOpenModalRegister }} />}
       {openModalLogin && <Login {...{ openModalLogin, setOpenModalLogin }} />}
+      </div>
     </header>
   )
 }

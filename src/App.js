@@ -91,9 +91,9 @@ function App() {
                 const Layout = route.isShowHeader ? DefaultComponent : Fragment
                 return (
                   <Route key={route.path} path={ route.path} element={
-                   <Layout>
+                   <DefaultComponent isAdmin={!route.isShowHeader}>
                      <Page/>
-                   </Layout>
+                   </DefaultComponent>
                   } />
                 )
               })

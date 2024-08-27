@@ -1,18 +1,14 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Rate } from 'antd';
-import {  Button } from 'antd';
-import ThemeContext from '../../../hook/CountProvider';
 
-const ButtonGroup = Button.Group;
 export const ProductCard = ({...props}) => {
     const {dataProduct} = props
-    const [increase,decline,] = useContext(ThemeContext)
   return (
       <div>
           <div className="row">
               <div className='product_img'>
                 {
-                    dataProduct.image && <img className='img_pasta-best' src={dataProduct.image} alt="main-product4" />
+                    dataProduct.image && <img className='img_pasta-item' src={dataProduct.image} alt="main-product4" />
                 }
               </div>
               <div className="menu-text">

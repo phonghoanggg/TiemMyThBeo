@@ -3,7 +3,9 @@ import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import './index.css'
 import ThemeContext from '../../hook/CountProvider'
-const DefaultComponent = ({children}) => {
+const DefaultComponent = ({isAdmin,children}) => {
+  const [valueSearch, setValueSearch] = useState();
+  const [resultSearch, setResultSearch] = useState();
   const [count, setCount] = useState(0);
   const increase = () => {
     setCount(count + 1);
@@ -16,8 +18,8 @@ const DefaultComponent = ({children}) => {
     setCount(newCount);
   };
   return (
-        <ThemeContext.Provider value={[increase,decline,count]}>
-            <Header/>
+        <ThemeContext.Provider value={{valueSearch,setValueSearch,resultSearch, setResultSearch}}>
+            <Header isAdminPage={isAdmin} />
             <div className='defaultMarginPC'>
             {children}
             </div>
