@@ -8,26 +8,28 @@ import { ProductCard } from './ProductCard/ProductCard';
 import ThemeContext from '../../hook/CountProvider';
 import qs from 'qs';
 import { Loading } from '../LoadingComponent/Loading';
+import { Button } from 'antd';
 
 const Content = () => {
   const {resultSearch} = useContext(ThemeContext)
   const [products, setProducts] = useState(null)
   const [isLoading, setIsLoading]  =  useState(false)
-
+  const [limit, setLimit] = useState(8)
+  const [totalProducts,setTotalProduct] = useState(0)
   const fetchProductAll = async (resultSearch) => {
     setIsLoading(true)
     const query = (resultSearch && resultSearch  !== "all")  ? qs.stringify({
-      filter: ['name', resultSearch],
+      filter: ['name', resultSearch]
     }, { arrayFormat: 'repeat' }) : "";
-    const res = await ProductServices.getAllProduct(query)
-    console.log("ressss",res)
+    const res = await ProductServices.getAllProduct(query,limit)
+    setTotalProduct(res.total)
     setProducts(res)
     setIsLoading(false)
   }
   useEffect(() => {
     fetchProductAll(resultSearch)
-  },[resultSearch])
-  console.log("isLoading",isLoading,resultSearch)
+  },[resultSearch,limit])
+  console.log("totalProducts",totalProducts,products)
   return (
     <div>
         <SlideHeader/>
@@ -105,7 +107,14 @@ const Content = () => {
           }
         </div>
         </Loading>
-
+        <Loading isLoading={isLoading}>
+          <Button className='flex justify-center m-auto mt-8'
+            onClick={() => setLimit(pre => pre + 4)}
+            disabled={totalProducts === products?.data.length}
+          >
+            Xem thêm
+          </Button>
+        </Loading>
       </section>
     </div>
   )
