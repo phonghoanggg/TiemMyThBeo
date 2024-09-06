@@ -101,8 +101,7 @@ const Content = () => {
         <div class="menu-content">
           {
             products && products?.data.map((item, index) => {
-              console.log("item_ketID", item._id)
-              return  <ProductCard dataProduct={item} key={item._id} />
+              return  <ProductCard dataProduct={item} key={item._id} id={item._id} />
             }) 
           }
         </div>

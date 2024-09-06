@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <div>
       <div class="footer" id="contact">
-        <img className='img_footer' src='img/footer_img.jpg'/>
+        <img className='img_footer' src='.img/footer_img.jpg'/>
         <div class="wrap_info-footer">
           <div class="contact-content">
             <h4>Đặt hàng ngay tại</h4>

@@ -19,11 +19,18 @@ const DefaultComponent = ({isAdmin,children}) => {
   };
   return (
         <ThemeContext.Provider value={{valueSearch,setValueSearch,resultSearch, setResultSearch}}>
-            <Header isAdminPage={isAdmin} />
-            <div className='defaultMarginPC'>
-            {children}
-            </div>
-            <Footer/>
+      <Header isAdminPage={isAdmin} />
+      <div
+        style={{
+          display: !isAdmin ?  'flex' : "unset",
+          justifyContent: !isAdmin ? 'center' : "unset",
+          marginTop: '106px',
+          padding: isAdmin ? '0 2% 70px' : 'unset',
+        }}
+      >
+        {children}
+      </div>
+      <Footer />
         </ThemeContext.Provider>
 
   )

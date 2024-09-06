@@ -1,8 +1,10 @@
 import HomePage from "../pages/HomePage/HomePage";
-import ProductsPage from "../pages/ProductsPage/ProductsPage";
 import NotFoundPage from "../component/NotFoundPage/NotFoundPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import { AdminPage } from "../pages/AdminPage/AdminPage";
+import { ProductDetail } from "../component/Content/ProductDetail/ProductDetail";
+
+
 
 export const routes = [
     {
@@ -11,8 +13,8 @@ export const routes = [
         isShowHeader:true
     },
     {
-        path:"/products",
-        page: ProductsPage,
+        path:"/products/:id",
+        page: ProductDetail,
         isShowHeader:true
     },
     {

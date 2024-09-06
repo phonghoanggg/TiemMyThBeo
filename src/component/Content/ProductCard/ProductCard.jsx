@@ -1,11 +1,16 @@
 import React from 'react'
 import { Rate } from 'antd';
+import { useNavigate } from 'react-router';
 
 export const ProductCard = ({...props}) => {
-    const {dataProduct} = props
+    const {dataProduct, id} = props
+    const navigate  = useNavigate()
+    const handleDetailProducts = () => {
+        navigate(`/products/${id}`)
+    }
   return (
       <div>
-          <div className="row">
+          <div className="row" onClick={handleDetailProducts}>
               <div className='product_img'>
                 {
                     dataProduct.image && <img className='img_pasta-item' src={dataProduct.image} alt="main-product4" />

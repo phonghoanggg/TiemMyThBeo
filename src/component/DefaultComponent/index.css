@@ -1,4 +1,6 @@
 .defaultMarginPC {
+    /* display: flex;
+    justify-content: center; */
     margin-top: 106px;
     padding: 0 2% 70px;
 }

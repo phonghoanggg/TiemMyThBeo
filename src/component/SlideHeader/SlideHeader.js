@@ -20,16 +20,16 @@ const SlideHeader = () => {
     <div class='md:col-span-2'>
       <Carousel autoplay speed={500} >
       <div className='wrap_img-header'>
-        <img className='h-full  max-h-[750px] object-contain' src='./img/slide1.jpg'/>
+        <img className='h-full w-full max-h-[750px] object-contain' src='./img/slide1.jpg'/>
       </div>
       <div className='wrap_img-header'>
-        <img className='h-full  max-h-[750px] object-contain' src='./img/slide6.jpg'/>
+        <img className='h-full w-full max-h-[750px] object-contain' src='./img/slide6.jpg'/>
       </div>
       <div className='wrap_img-header'>
-        <img className='h-full  max-h-[750px] object-contain' src='./img/slide5.jpg'/>
+        <img className='h-full w-full max-h-[750px] object-contain' src='./img/slide5.jpg'/>
       </div>
       <div className='wrap_img-header'>
-        <img className='h-full  max-h-[750px] object-contain' src='./img/slide4.jpg'/>
+        <img className='h-full w-full max-h-[750px] object-contain' src='./img/slide4.jpg'/>
       </div>
       </Carousel>
 
