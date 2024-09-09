@@ -18,3 +18,8 @@
     display: flex;
     justify-content: space-between;
 }
+.box_bnt-seemore {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}

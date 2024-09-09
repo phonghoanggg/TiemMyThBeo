@@ -106,14 +106,16 @@ const Content = () => {
           }
         </div>
         </Loading>
-        <Loading isLoading={isLoading}>
-          <Button className='flex justify-center m-auto mt-8'
-            onClick={() => setLimit(pre => pre + 4)}
-            disabled={totalProducts === products?.data.length}
-          >
-            Xem thêm
-          </Button>
-        </Loading>
+        <div className='box_bnt-seemore'>
+          <Loading isLoading={isLoading}>
+            <Button className='flex justify-center m-auto mt-8'
+              onClick={() => setLimit(pre => pre + 4)}
+              disabled={totalProducts === products?.data.length}
+            >
+              Xem thêm
+            </Button>
+          </Loading>
+        </div>
       </section>
     </div>
   )

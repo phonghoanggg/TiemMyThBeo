@@ -1,11 +1,66 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Loading } from '../LoadingComponent/Loading'
-import { Button, Form, Input, Upload } from 'antd'
+import { Button, Form, Input, TreeSelect, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons';
 import './index.css'
 const DrawerProduct = (props) => {
     const { isLoading, avatar,form, typeModal,handleChangeImg, onSubmitUpdate, onFinishFailed,onFinish } = props
-    console.log("avatar",avatar)
+    const [value, setValue] = useState();
+    const [nameType, setNameType] = useState();
+
+    const treeData = [
+        {
+            value: 'spaghetti',
+            title: 'Mỳ',
+            children: [
+                {
+                    value: 'spaghettiSpicy',
+                    title: 'Mỳ cay',
+                },
+                {
+                    value: 'spaghettiNotSpicy',
+                    title: 'Mỳ không cay',
+                },
+            ],
+        },
+        {
+            value: 'pizza',
+            title: 'Pizza',
+            children: [
+                {
+                    value: 'pizzaSeaFood',
+                    title: 'Pizza Hải sản',
+                },
+                {
+                    value: 'pizzaClassic',
+                    title: 'Pizza Truyền thống',
+                },
+            ],
+        },
+        {
+            value: 'chicken',
+            title: 'Gà',
+            children: [
+                {
+                    value: 'chickenSpicy',
+                    title: 'Gà Cay',
+                },
+                {
+                    value: 'chickenNotSpicy',
+                    title: 'Gà Không cay',
+                },
+            ],
+        },
+    ];
+    const onChange = (newValue) => {
+        setValue(newValue?.value);
+        setNameType(newValue.label)
+        console.log("newValue",newValue)
+    };
+    const onPopupScroll = (e) => {
+        console.log('onPopupScroll', e);
+    };
+    console.log("form",form)
     return (
         <div>
             <Loading isLoading={isLoading} >
@@ -38,6 +93,13 @@ const DrawerProduct = (props) => {
                         <Input />
                     </Form.Item>
                     <Form.Item
+                        label=""
+                        name="nameType"
+                        hidden
+                    >
+                        <Input  value={nameType}/>
+                    </Form.Item>
+                    <Form.Item
                         label="Kiểu"
                         name="type"
                         rules={[
@@ -47,8 +109,26 @@ const DrawerProduct = (props) => {
                             },
                         ]}
                     >
-                        <Input />
+                        <TreeSelect
+                        showSearch
+                        style={{
+                            width: '100%',
+                        }}
+                        value={value}
+                        dropdownStyle={{
+                            maxHeight: 800,
+                            overflow: 'auto',
+                        }}
+                        placeholder="Chọn kiểu sản phẩm"
+                        allowClear
+                        treeDefaultExpandAll
+                        onChange={(e) => onChange(e)}
+                        treeData={treeData}
+                        onPopupScroll={onPopupScroll}
+                        labelInValue={true}
+                    />
                     </Form.Item>
+                    
                     <Form.Item
                         label="Giá sản phẩm"
                         name="price"

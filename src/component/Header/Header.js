@@ -60,6 +60,18 @@ const Header = ({isAdminPage}) => {
   useEffect(() => {
     fetchAPIGet(valueSearch)
   },[valueSearch])
+  const fetchTypeProduct = async(value) => {
+    try {
+      const response = await ProductService.getAllType()
+      console.log("1111111",response)
+    } catch (error) {
+      console.error('Lỗi khi gọi API:', error);
+    }
+  }
+  useEffect(() => {
+    fetchTypeProduct()
+  },[])
+
 
 
 

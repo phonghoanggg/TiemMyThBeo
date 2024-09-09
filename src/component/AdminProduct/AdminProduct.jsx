@@ -48,6 +48,7 @@ const AdminProduct = () => {
   // get allProduct
   const queryProducts = useQuery({queryKey:['products'],queryFn:getAllProducts})
   const {data: dataProduct,isFetching} = queryProducts
+  console.log("dataProduct",dataProduct)
 
   // Mutation create product
   const { data, isSuccess, isError } = mutation
@@ -137,10 +138,16 @@ const AdminProduct = () => {
 
   // handle ADD product
   const onFinish = (values) => {
+    const typeObj = values.type
     if (values.image) {
       values.image = avatar
     }
-    console.log("values",values)
+    values.nameType = typeObj.label
+    if(values.type) {
+      values.type = typeObj.value
+    }
+    console.log("values",typeObj,values)
+
     // payload value 
     mutation.mutate(values, {
       onSettled: () => {
@@ -166,6 +173,7 @@ const AdminProduct = () => {
   // GET data for item product
   const fetchDataProductItem = async(rowSelected) => {
     const res = await ProductService.getDetailProduct(rowSelected)
+    console.log("resssss",res)
     const data = {
       name: res?.data?.name,
       price: res?.data?.price,
@@ -187,13 +195,16 @@ const AdminProduct = () => {
 
   // PUT data for update product
   const fetchUpdateProduct = async(values) => {
+    console.log("valuee111", values)
+    const typeObj = values.type
     const data = {
       name: values.name,
       price: values.price,
       image: avatar,
       description: values.description,
       countInStock: values.countInStock,
-      type: values.type,
+      type: typeObj.value,
+      nameType:typeObj.label,
       rating: values.rating,
     }
     await mutationUpdate.mutate({id: rowSelected, access_token: user?.access_token, data},{
@@ -226,6 +237,7 @@ const AdminProduct = () => {
 
   // add id for list product
   const dataProductList = dataProduct?.data.length && dataProduct?.data.map((item) => {
+    console.log("22222", item)
     return {...item, key: item._id}
   })
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -357,8 +369,8 @@ const AdminProduct = () => {
     },
     {
       title: 'Kiểu sản phẩm',
-      dataIndex: 'type',
-      ...getColumnSearchProps('type'),
+      dataIndex: 'nameType',
+      ...getColumnSearchProps('nameType'),
 
     },
     {
